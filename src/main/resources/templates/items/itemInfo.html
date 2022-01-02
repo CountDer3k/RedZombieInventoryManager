@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<link rel="icon" type="image/ico" th:href="@{../../static/favicon.ico}">
+<link th:href="@{/css/main.css}" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+	integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+	crossorigin="anonymous" />
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+	integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+	crossorigin="anonymous">
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body class="">
+	<!-- Top Bar -->
+	<div th:include="_layout/navbar :: #navigationFragment"></div>
+	<br />
+
+	<div class="d3Card">
+		<div class="row" style="background-color: gray; height: 30px">
+			<div class="col">
+				<div class="row sidePadding">Hello</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row d3Card sidePadding" style="width: 80%; margin: auto; overflow:scroll">
+		<div class="col" style="padding:10px">
+			<h1 class="col">
+				<span th:text="${item.brand}"></span>  
+				<span th:text="${item.name}"></span>
+				<span class="h3">
+					(<span class="h3" th:text="${item.glass_type}"></span>)
+				</span>
+			</h1>
+			<h6 class="col-3">Sku: <span th:text="${item.sku}"></span></h6>
+			<h6 class="col-3">Barcode: <span th:text="${item.barcode}"></span></h6>
+			<hr/>
+		
+		
+			<div class="row">
+				<div class="col"></div>
+				<!-- 1st Set of Columns -->
+				<div class="col">
+					<p class="row">Expected:</p>
+					<p class="row">Actual:</p>
+					<p class="row">Offset:</p>
+					<p class="row">Coming:</p>
+					<p class="row">Order Circle:</p>
+					<p class="row">MIQ:</p>
+				</div>
+				<div class="col">
+					<p class="row" th:text="${item.expectedTotal}"></p>
+					<p class="row" th:if="${#strings.isEmpty(item.actualTotal)}" th:text="${item.expectedTotal}">!!!</p>
+					<p class="row" th:if="${not #strings.isEmpty(item.actualTotal)}" th:text="${item.actualTotal}">!!!</p>
+					<p class="row" th:text="${item.offset}"></p>
+					<p class="row" th:text="${item.coming}"></p>
+					<p class="row" th:text="${item.orderCircleTotal}"></p>
+					<p class="row" th:text="${item.MIQ}"></p>
+				</div>
+				<!-- 2nd Set of Columns -->
+				<div class="col-1" style="border-left: 1px solid black;"></div>
+				<div class="col">
+					<p class="row">Week 1:</p>
+					<p class="row">Week 2:</p>
+					<p class="row">Week 3:</p>
+					<p class="row">Week 4:</p>
+					<p class="row">Week 5:</p>
+				</div>
+				<div class="col">
+					<p class="row" th:text="${item.week1}"></p>
+					<p class="row" th:text="${item.week2}"></p>
+					<p class="row" th:text="${item.week3}"></p>
+					<p class="row" th:text="${item.week4}"></p>
+					<p class="row" th:text="${item.week5}"></p>
+				</div>		
+			</div>
+			<hr/>
+			<!-- Other Inventory Numbers -->
+			<div class="row">
+				<p class="col text-center">Ordered This Month</p>
+				<p class="col text-center">Ordered Last Month</p>
+				<p class="col text-center">Ordered From Manufacturer</p>
+			</div>
+			<div class="row">
+				<p class="col text-center" th:text="${item.orderedThisMonth}"></p>
+				<p class="col text-center" th:text="${item.orderedLastMonth}"></p>
+				<p class="col text-center" th:text="${item.orderedFromManufacturer}"></p>
+			</div>
+		</div>
+
+	</div>
+
+
+	<div class="d3Card">
+		<div class="row" style="background-color: gray; height: 30px; bottom:0">
+			<div class="col">
+				<div class="row sidePadding">Hello</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+		integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+		crossorigin="anonymous">
+		
+	</script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
+		integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
+		crossorigin="anonymous">
+		
+	</script>
+
+</body>
+
+</html>
