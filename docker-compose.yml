@@ -26,7 +26,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/rzinv?useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true
 
   mysql:
-    image: "${DOCKER_MYSQL_IMAGE:-mysql:8.0}"
+    image: "mariadb:10.6.4-focal"
     ports:
      - 3306:3306
     environment:
