@@ -59,6 +59,15 @@ public class ItemService {
 		return item;
 	}
 	
+	@Log
+	public List<monthYearModel> getAllMonthYears(){
+		return itemRepo.getAllMonthYears();
+	}
+	
+	@Log
+	public boolean addItem(ItemModel item) {
+		return itemRepo.addItem(item);
+	}
 	
 	@Log
 	/**

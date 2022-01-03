@@ -24,27 +24,31 @@
 	<br />
 
 	<div class="d3Card">
-		<div class="row" style="background-color: gray; height: 30px">
+		<div class="row">
 			<div class="col">
-				<div class="row sidePadding">Hello</div>
+				<div class="row sidePadding"></div>
 			</div>
 		</div>
 	</div>
 
-	<div class="row d3Card sidePadding" style="width: 80%; margin: auto; overflow:scroll">
-		<div class="col" style="padding:10px">
+	<div class="row d3Card sidePadding"
+		style="width: 80%; margin: auto; overflow: scroll">
+		<div class="col" style="padding: 10px">
 			<h1 class="col">
-				<span th:text="${item.brand}"></span>  
-				<span th:text="${item.name}"></span>
-				<span class="h3">
-					(<span class="h3" th:text="${item.glass_type}"></span>)
+				<span th:text="${item.brand}"></span> <span th:text="${item.name}"></span>
+				<span class="h3"> (<span class="h3"
+					th:text="${item.glass_type}"></span>)
 				</span>
 			</h1>
-			<h6 class="col-3">Sku: <span th:text="${item.sku}"></span></h6>
-			<h6 class="col-3">Barcode: <span th:text="${item.barcode}"></span></h6>
-			<hr/>
-		
-		
+			<h6 class="col-3">
+				Sku: <span th:text="${item.sku}"></span>
+			</h6>
+			<h6 class="col-3">
+				Barcode: <span th:text="${item.barcode}"></span>
+			</h6>
+			<hr />
+
+
 			<div class="row">
 				<div class="col"></div>
 				<!-- 1st Set of Columns -->
@@ -58,8 +62,10 @@
 				</div>
 				<div class="col">
 					<p class="row" th:text="${item.expectedTotal}"></p>
-					<p class="row" th:if="${#strings.isEmpty(item.actualTotal)}" th:text="${item.expectedTotal}">!!!</p>
-					<p class="row" th:if="${not #strings.isEmpty(item.actualTotal)}" th:text="${item.actualTotal}">!!!</p>
+					<p class="row" th:if="${#strings.isEmpty(item.actualTotal)}"
+						th:text="${item.expectedTotal}">!!!</p>
+					<p class="row" th:if="${not #strings.isEmpty(item.actualTotal)}"
+						th:text="${item.actualTotal}">!!!</p>
 					<p class="row" th:text="${item.offset}"></p>
 					<p class="row" th:text="${item.coming}"></p>
 					<p class="row" th:text="${item.orderCircleTotal}"></p>
@@ -73,6 +79,7 @@
 					<p class="row">Week 3:</p>
 					<p class="row">Week 4:</p>
 					<p class="row">Week 5:</p>
+					<p class="row">Ordered This Month:</p>
 				</div>
 				<div class="col">
 					<p class="row" th:text="${item.week1}"></p>
@@ -80,33 +87,32 @@
 					<p class="row" th:text="${item.week3}"></p>
 					<p class="row" th:text="${item.week4}"></p>
 					<p class="row" th:text="${item.week5}"></p>
-				</div>		
+					<p class="row" th:text="${item.orderedThisMonth}"></p>
+				</div>
 			</div>
-			<hr/>
+			<hr />
 			<!-- Other Inventory Numbers -->
 			<div class="row">
-				<p class="col text-center">Ordered This Month</p>
+				<p class="col text-center">Total Last Month</p>
 				<p class="col text-center">Ordered Last Month</p>
 				<p class="col text-center">Ordered From Manufacturer</p>
 			</div>
 			<div class="row">
-				<p class="col text-center" th:text="${item.orderedThisMonth}"></p>
+				<p class="col text-center" th:text="${item.previousMonthTotal}"></p>
 				<p class="col text-center" th:text="${item.orderedLastMonth}"></p>
 				<p class="col text-center" th:text="${item.orderedFromManufacturer}"></p>
 			</div>
-		</div>
-
-	</div>
-
-
-	<div class="d3Card">
-		<div class="row" style="background-color: gray; height: 30px; bottom:0">
-			<div class="col">
-				<div class="row sidePadding">Hello</div>
+			<br />
+			<div class="row">
+				<div class="col"></div>
+				<div class="col" style="display: flex; justify-content: center; align-items: center">
+					<a href="" th:href="@{/}" class="btn btn-success">Back
+						To Items</a>
+				</div>
+				<div class="col"></div>
 			</div>
 		</div>
 	</div>
-
 
 
 	<script

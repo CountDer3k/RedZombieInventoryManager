@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.redzombie.RedZombieInventory.Item.ItemService;
 import com.redzombie.RedZombieInventory.Model.ItemModel;
+import com.redzombie.RedZombieInventory.Model.monthYearModel;
 import com.redzombie.RedZombieInventory.aop.Log;
 
 
@@ -52,7 +53,9 @@ public class HomeController {
 		try {
 			ModelAndView mv = new ModelAndView("index");
 			List<ItemModel> items = itemService.getAllItems();
+			List<monthYearModel> months = itemService.getAllMonthYears();
 			mv.getModelMap().addAttribute("items", items);
+			mv.getModelMap().addAttribute("months", months);
 			return mv;
 		}catch(Exception e) {
 			logger.error("HomeController - GridViewInfo() "+ e.toString());

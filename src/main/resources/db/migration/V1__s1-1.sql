@@ -5,6 +5,7 @@ CREATE TABLE Item(
 	barcode TEXT,
 	brand TEXT NOT NULL,
 	glass_type TEXT NOT NULL,
+	isUV TEXT NOT NULL,
 	item_type INT,
 	week1 INT,
 	week2 INT,

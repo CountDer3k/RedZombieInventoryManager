@@ -57,8 +57,7 @@
 
 			<th:block th:each="item : ${items}">
 				<!-- This happens when brand name changes -->
-				<div class="row d3Card" th:if="${item.isBrandOnly}"
-					th:classappend="${item.brand} == 'UV' ? UVBrand: Brand ">
+				<div class="row d3Card" th:if="${item.isBrandOnly}" th:classappend="Brand ">
 					<h2 th:text="${item.brand}"></h2>
 				</div>
 
@@ -109,9 +108,15 @@
 
 	<!-- Bottom Tab Bar  -->
 	<div class="d3Card stickyDiv-bottom">
-		<div class="row" style="background-color: gray; height: 30px">
+		<div class="row sidePadding"
+			style="background-color: #f8f8ff; height: 50px; overflow: auto; white-space: nowrap;">
 			<div class="col">
-				<div class="row sidePadding">Hello</div>
+				<div style="width: 20px"></div>
+				<th:block th:each="month : ${months}"
+					style="padding: 0px 10px;">
+					<a href="index.html" th:href="@{/}" th:text="${month.access}"
+						class="btn btn-outline-dark" style="margin-top:5px;"></a>
+				</th:block>
 			</div>
 		</div>
 	</div>

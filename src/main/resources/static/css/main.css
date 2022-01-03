@@ -83,6 +83,14 @@ a.h2:hover, a.h2:active {
 	background-color: white;
 }
 
+.stickyDiv-inner {
+	position: -webkit-sticky; /* Safari */
+	position: sticky;
+	top: -90;
+	margin: auto;
+	background-color: white;
+}
+
 .stickyDiv-bottom {
 	position: -webkit-sticky; /* Safari */
 	position: sticky;

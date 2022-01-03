@@ -28,7 +28,9 @@ public class ItemRepository {
 	// SQL Queries
 	private final String GET_MONTH_YEAR = "SELECT * From MonthYear WHERE access = :code";
 
-	private final String GET_ALL_ITEMS_OF_THE_MONTH = "SELECT * FROM Item WHERE month = :month AND year = :year ORDER BY brand, glass_type, item_id";
+	private final String GET_ALL_MONTH_YEAR = "SELECT * FROM MonthYear";
+
+	private final String GET_ALL_ITEMS_OF_THE_MONTH = "SELECT * FROM Item WHERE month = :month AND year = :year ORDER BY isUV, brand, glass_type, item_id";
 
 	private final String GET_ITEM_INFO_FROM_ID = "SELECT * FROM Item WHERE item_id = :itemID";
 
@@ -39,6 +41,7 @@ public class ItemRepository {
 			+ ":week1, :week2, :week3, :week4, :week5, :orderedLastMonth, :orderedFromManufacturer, :coming,"
 			+ ":month, :year)";
 
+	private final String ADD_MONTHYEAR = "INSERT INTO MonthYear(nowMonth, nowYear, access) VALUES(:month, :year, :access)";
 	private final String CHANGE_MONTH_YEAR = "UPDATE MonthYear SET nowMonth = :month, nowYear = :year WHERE access = :code";
 
 
@@ -73,7 +76,6 @@ public class ItemRepository {
 				.addValue("month", mym.getMonth())
 				.addValue("year", mym.getYear());
 		List<ItemModel> items = (List<ItemModel>)jdbc.query(GET_ALL_ITEMS_OF_THE_MONTH, parameters, new ItemRowMapper());
-		logger.info("All item of month count: " +items.size());
 		return AddBrandItem(items);
 	}
 
@@ -92,12 +94,23 @@ public class ItemRepository {
 	}
 
 	@Log
+	// Gets all the month years for the tab system
+	public List<monthYearModel> getAllMonthYears(){
+		try {
+			List<monthYearModel> months = (List<monthYearModel>)jdbc.query(GET_ALL_MONTH_YEAR, new monthYearRowMapper());
+			return months;
+		}catch(Exception e) {
+			logger.error("ItemRepository - getAllMonthYears() "+e.toString());
+			return null;
+		}
+	}
+
+	@Log
 	public ItemModel getItemInfo(String itemID) {
 		try {
 			SqlParameterSource parameters = new MapSqlParameterSource()
 					.addValue("itemID", itemID);
 			ItemModel item = (ItemModel)jdbc.queryForObject(GET_ITEM_INFO_FROM_ID, parameters, new ItemRowMapper());
-			logger.info("Brand: " + item.getBrand());
 			item.setCalcuations();
 			return item;
 		}catch(Exception e) {
@@ -146,6 +159,25 @@ public class ItemRepository {
 	}
 
 
+	@Log
+	public boolean addMonthYear(monthYearModel mym) {
+		try {
+			String month = intToMonth(mym.getMonth());
+			String access = month+"-"+mym.getYear();
+
+			KeyHolder keyHolder = new GeneratedKeyHolder();
+			SqlParameterSource parameters = new MapSqlParameterSource()
+					.addValue("month", mym.getMonth())
+					.addValue("year", mym.getYear())
+					.addValue("access", access);
+			jdbc.update(ADD_MONTHYEAR, parameters, keyHolder);
+			return true;
+		}catch(Exception e) {
+			logger.error("ItemRepository - addMonthYear() " + e.toString());
+			return false;
+		}
+	}
+
 	//--------------------
 	// UPDATE Methods
 	//--------------------
@@ -159,6 +191,7 @@ public class ItemRepository {
 					.addValue("year", mym.getYear())
 					.addValue("code", "now");
 			jdbc.update(CHANGE_MONTH_YEAR, parameters, keyHolder);
+
 			return true;
 		} catch(Exception e) {
 			logger.error("ItemRepository - updateMonthYear() " +e.toString());
@@ -186,10 +219,10 @@ public class ItemRepository {
 			// Get all items from this month & year
 			List<ItemModel> items = removeBrandItem(getAllItemsOfTheMonth());
 			// Get Month/Year & increment it 
-			monthYearModel mym = getCurrentMonthYear();
-			mym = increaseByAMonth(mym);
+			monthYearModel mym_og = getCurrentMonthYear();
+			monthYearModel mym = increaseByAMonth(mym_og);
 			logger.info("items Count: "+items.size());
-			
+
 			// Iterate through each item
 			for(ItemModel item : items) {
 				// re-calculate values
@@ -210,6 +243,8 @@ public class ItemRepository {
 					return false;
 				}
 			}
+			// Store current month year
+			addMonthYear(mym_og);
 			// change month/year in database
 			updateMonthYear(mym);
 			return true;
@@ -230,12 +265,24 @@ public class ItemRepository {
 	@Log
 	private List<ItemModel> AddBrandItem(List<ItemModel> items){
 		String currentBrand = "";
+		boolean uvBrandCreated = false;
 		for(int i = 0; i < items.size(); i++) {
 			String brand = items.get(i).getBrand();
 			if(! brand.equals(currentBrand)) {
-				ItemModel brandItem = new ItemModel(true, brand);
-				items.add(i, brandItem);
-				currentBrand = brand;
+				boolean isUV = items.get(i).getIsUV();
+				if(isUV) {
+					if(!uvBrandCreated) {
+						ItemModel brandItem = new ItemModel(true,"UV");
+						items.add(i, brandItem);
+						uvBrandCreated = true;
+						currentBrand = brand;
+					}
+				}
+				else {
+					ItemModel brandItem = new ItemModel(true,brand);
+					currentBrand = brand;
+					items.add(i, brandItem);
+				}
 			}
 		}
 		return items;
@@ -255,8 +302,8 @@ public class ItemRepository {
 		}
 		return items;
 	}
-	
-	
+
+
 	/**
 	 * Increase month by 1, unless at the end of the year, then it increases the year and sets the month to the first
 	 * 
@@ -267,7 +314,7 @@ public class ItemRepository {
 	private monthYearModel increaseByAMonth(monthYearModel mym) {
 		int month = mym.getMonth();
 		int year = mym.getYear();
-		
+
 		if(month+1 > 12) {
 			month = 1;
 			year++;
@@ -278,6 +325,50 @@ public class ItemRepository {
 		mym.setMonth(month);
 		mym.setYear(year);
 		return mym;
+	}
+
+	@Log
+	private String intToMonth(int value) {
+		String month = "???";
+		switch(value){
+		case 1:
+			month = "January";
+			break;
+		case 2:
+			month = "Febuaray";
+			break;
+		case 3:
+			month = "March";
+			break;
+		case 4:
+			month = "April";
+			break;
+		case 5:
+			month = "May";
+			break;
+		case 6:
+			month = "June";
+			break;
+		case 7:
+			month = "July";
+			break;
+		case 8:
+			month = "August";
+			break;
+		case 9:
+			month = "September";
+			break;
+		case 10:
+			month = "October";
+			break;
+		case 11:
+			month = "November";
+			break;
+		case 12:
+			month = "December";
+			break;
+		}
+		return month;
 	}
 
 	public static ItemRepository getInstance() {

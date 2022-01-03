@@ -13,9 +13,9 @@ public class ItemModel {
 	private String brand = "";
 	// Standard, Full Coverage, Privacy, Camera, Tablet, 
 	private String glass_type = "";
+	private boolean isUV = false;
 	// type: glass, charger, speaker, etc.
 	private int item_type = -1;
-
 	// Final count of inventory in hand for the previous month
 	private int previousMonthTotal = 0;
 	// This needs to be a string in order to be blank at times
@@ -319,6 +319,14 @@ public class ItemModel {
 
 	public void setYear(int year) {
 		this.year = year;
+	}
+
+	public boolean getIsUV() {
+		return isUV;
+	}
+
+	public void setIsUV(boolean isUV) {
+		this.isUV = isUV;
 	}
 	
 	

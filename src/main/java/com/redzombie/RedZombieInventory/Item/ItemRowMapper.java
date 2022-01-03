@@ -34,6 +34,9 @@ public class ItemRowMapper implements RowMapper{
 		
 		item.setMonth(rs.getInt("month"));
 		item.setYear(rs.getInt("year"));
+		// convert from string to boolean
+		boolean isUV = (rs.getString("isUV")).equals("False") ? false : true;
+		item.setIsUV(isUV);
 		
 		item.setCalcuations();
 		return item;
