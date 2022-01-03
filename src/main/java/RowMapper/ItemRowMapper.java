@@ -1,4 +1,4 @@
-package com.redzombie.RedZombieInventory.Item;
+package RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

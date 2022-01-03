@@ -13,9 +13,16 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.redzombie.RedZombieInventory.Model.BrandModel;
+import com.redzombie.RedZombieInventory.Model.GlassTypeModel;
 import com.redzombie.RedZombieInventory.Model.ItemModel;
 import com.redzombie.RedZombieInventory.Model.monthYearModel;
 import com.redzombie.RedZombieInventory.aop.Log;
+
+import RowMapper.BrandRowMapper;
+import RowMapper.GlassTypeRowMapper;
+import RowMapper.ItemRowMapper;
+import RowMapper.monthYearRowMapper;
 
 
 @Repository
@@ -26,13 +33,28 @@ public class ItemRepository {
 
 
 	// SQL Queries
+	private final String GET_GLASSTYPE_FROM_NAME = "SELECT glass_type_id FROM Glass_Type WHERE glass_type_name = :name ";
+	private final String GET_BRANDID_FROM_NAME = "SELECT brand_id FROM Brand WHERE brand_name = :name ";
 	private final String GET_MONTH_YEAR = "SELECT * From MonthYear WHERE access = :code";
 
 	private final String GET_ALL_MONTH_YEAR = "SELECT * FROM MonthYear";
 
-	private final String GET_ALL_ITEMS_OF_THE_MONTH = "SELECT * FROM Item WHERE month = :month AND year = :year ORDER BY isUV, brand, glass_type, item_id";
-
-	private final String GET_ITEM_INFO_FROM_ID = "SELECT * FROM Item WHERE item_id = :itemID";
+	private final String GET_ALL_ITEMS_OF_THE_MONTH = "SELECT i.item_id, name, sku, barcode, b.brand_name AS brand, gt.glass_type_name AS glass_type, isUV, item_type, week1, week2, week3, week4, week5, previousMonthTotal, actualTotal, orderedLastMonth, orderedFromManufacturer, coming, `month`, `year` "
+			+ "FROM Item i "
+			+ "INNER JOIN Brand b "
+			+ "ON i.brand = b.brand_id "
+			+ "INNER JOIN Glass_Type gt "
+			+ "ON i.glass_type = gt.glass_type_id "
+			+ "WHERE month = :month AND year = :year "
+			+ "ORDER BY isUV, brand, glass_type, item_id";
+	
+	private final String GET_ITEM_INFO_FROM_ID = "SELECT i.item_id, name, sku, barcode, b.brand_name AS brand, gt.glass_type_name AS glass_type, isUV, item_type, week1, week2, week3, week4, week5, previousMonthTotal, actualTotal, orderedLastMonth, orderedFromManufacturer, coming, `month`, `year` "
+			+ "FROM Item i "
+			+ "INNER JOIN Brand b "
+			+ "ON i.brand = b.brand_id "
+			+ "INNER JOIN Glass_Type gt "
+			+ "ON i.glass_type = gt.glass_type_id "
+			+ "WHERE item_id = :itemID";
 
 	private final String ADD_ITEM = "INSERT INTO Item "
 			+ "(name, sku, barcode, brand, glass_type, item_type, previousMonthTotal, actualTotal,"
@@ -44,6 +66,8 @@ public class ItemRepository {
 	private final String ADD_MONTHYEAR = "INSERT INTO MonthYear(nowMonth, nowYear, access) VALUES(:month, :year, :access)";
 	private final String CHANGE_MONTH_YEAR = "UPDATE MonthYear SET nowMonth = :month, nowYear = :year WHERE access = :code";
 
+	//?? When this is implemented, check the brand name is not already in use
+	private final String ADD_NEW_BRAND ="";
 
 
 
@@ -58,6 +82,32 @@ public class ItemRepository {
 	//--------------------
 	// GET Methods
 	//--------------------
+	@Log
+	private int GetBrandIDFromName(String name) {
+		try {
+		SqlParameterSource parameters = new MapSqlParameterSource()
+				.addValue("name", name);
+		BrandModel bm = (BrandModel) jdbc.queryForObject(GET_BRANDID_FROM_NAME, parameters, new BrandRowMapper()); 
+		return bm.getBrand_id();
+		} catch(Exception e) {
+			logger.error("ItemRepository - GetBrandIDFromName() " + e.toString());
+			return (Integer) null;
+		}
+	}
+
+	@Log
+	private int GetGlassTypeIDFromName(String name) {
+		try {
+		SqlParameterSource parameters = new MapSqlParameterSource()
+				.addValue("name", name);
+		GlassTypeModel gtm = (GlassTypeModel) jdbc.queryForObject(GET_GLASSTYPE_FROM_NAME, parameters, new GlassTypeRowMapper()); 
+		return gtm.getGlass_type_id();
+		} catch(Exception e) {
+			logger.error("ItemRepository - GetGlassTypeIDFromName() " + e.toString());
+			return (Integer) null;
+		}
+	}
+	
 
 	@Log
 	public List<ItemModel> getAllItemsOfTheMonth(){
@@ -76,6 +126,7 @@ public class ItemRepository {
 				.addValue("month", mym.getMonth())
 				.addValue("year", mym.getYear());
 		List<ItemModel> items = (List<ItemModel>)jdbc.query(GET_ALL_ITEMS_OF_THE_MONTH, parameters, new ItemRowMapper());
+		logger.info("Items Count: " + items.size());
 		return AddBrandItem(items);
 	}
 
@@ -129,14 +180,18 @@ public class ItemRepository {
 			//?? Maybe change this in the db to instead take a string over an int
 			String actual = item.getActualTotal();
 			int actualInt = actual != null && !actual.equals("") ? Integer.parseInt(actual) : item.getExpectedTotal();
-
+			// Used to keep conversion on db vs model
+			int brand = 1;//GetBrandIDFromName(item.getBrand());
+			logger.info("Name: " + item.getGlass_type());
+			int glassType = GetGlassTypeIDFromName(item.getGlass_type());
+			
 			KeyHolder keyHolder = new GeneratedKeyHolder();
 			SqlParameterSource parameters = new MapSqlParameterSource()
 					.addValue("name", item.getName())
 					.addValue("sku", item.getSku())
 					.addValue("barcode", item.getBarcode())
-					.addValue("brand", item.getBrand())
-					.addValue("glass_type", item.getGlass_type())
+					.addValue("brand", brand)
+					.addValue("glass_type", glassType)
 					.addValue("item_type", item.getItem_type())
 					.addValue("previousMonthTotal", item.getPreviousMonthTotal())
 					.addValue("actualTotal", actualInt)
@@ -303,7 +358,7 @@ public class ItemRepository {
 		return items;
 	}
 
-
+	
 	/**
 	 * Increase month by 1, unless at the end of the year, then it increases the year and sets the month to the first
 	 * 
