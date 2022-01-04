@@ -64,15 +64,6 @@
 											th:text="${glass.glass_type_name}"></option>
 									</select>
 								</div>
-								<div class="col">
-									<label>Item Type</label> <br /> 
-									<select style="width:150px"
-										th:field="*{item_type}" class="btn btn-outline-primary">
-										<option class="btn-light" th:each="item : ${itemTypes}"
-											th:value="${item.item_type_id}"
-											th:text="${item.item_type_name}"></option>
-									</select>
-								</div>
 							</div>
 							<br/>
 							<div class="row form-group">

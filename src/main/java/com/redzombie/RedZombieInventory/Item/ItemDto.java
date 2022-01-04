@@ -19,7 +19,7 @@ public class ItemDto {
 	@NonNull
 	private int glass_type;
 	
-	private int item_type;
+	private int item_type = 1;
 	
 	private int coming;
 	

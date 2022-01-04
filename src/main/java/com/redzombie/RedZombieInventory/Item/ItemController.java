@@ -65,7 +65,6 @@ public class ItemController {
 		mv.getModelMap().addAttribute("itemDto", itemDto);
 		mv.getModelMap().addAttribute("brands", brands);
 		mv.getModelMap().addAttribute("glassTypes", glassTypes);
-		mv.getModelMap().addAttribute("itemTypes", itemTypes);
 		
 		return mv;
 	}
