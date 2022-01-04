@@ -8,6 +8,10 @@ CREATE TABLE Glass_Type(
 	glass_type_name TEXT NOT NULL
 );
 
+CREATE TABLE Item_Type(
+	item_type_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	item_type_name TEXT NOT NULL
+);
 
 INSERT INTO Brand(brand_name) VALUES('Alcatel');
 INSERT INTO Brand(brand_name) VALUES('Amazon');
@@ -33,3 +37,8 @@ INSERT INTO Glass_Type(glass_type_name) VALUES("Tablet Glass");
 INSERT INTO Glass_Type(glass_type_name) VALUES("FCSA");
 INSERT INTO Glass_Type(glass_type_name) VALUES("Watches");
 INSERT INTO Glass_Type(glass_type_name) VALUES("UV");
+
+INSERT INTO Item_Type(item_type_name) VALUES("Glass");
+INSERT INTO Item_Type(item_type_name) VALUES("Case");
+INSERT INTO Item_Type(item_type_name) VALUES("Speaker");
+INSERT INTO Item_Type(item_type_name) VALUES("Cable");

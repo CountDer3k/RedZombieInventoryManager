@@ -17,7 +17,14 @@
 </head>
 
 <body>
-	<div class="row d3Card" style="width: 500px">
+	<!-- Top Bar -->
+	<div class="d3Card stickyDiv">
+		<div class="row">
+			<div class="col" th:include="_layout/navbar :: #navigationFragment"></div>
+		</div>
+	</div>
+
+	<div class="row">
 		<div class="col">
 			<div class="row sidePadding">
 				<div class="col-3"></div>
@@ -25,40 +32,67 @@
 					<div class="d3Card-fullscreen d-grid gap-2">
 						<h1>Add Item</h1>
 						<label th:text=${msg}></label>
-						
-						<form enctype="utf8">
-						
-						</form>
-						
-						
-						
-						<form th:action="@{/items/addItem}" th:object="${itemModel}"
+
+						<form th:action="@{/items/addItem}" th:object="${itemDto}"
 							method="POST" enctype="utf8">
 							<div class="form-group">
 								<label>Name</label> <input class="form-control"
 									th:field="*{name}" />
-								<p th:each="error: ${#fields.errors('title')}"
-									th:text="${error}">Validation error</p>
 							</div>
 							<div class="form-group">
-								<label>Sku</label> <input class="form-control"
-									th:field="*{sku}" />
-								<p th:each="error: ${#fields.errors('content')}"
-									th:text="${error}">Validation error</p>
+								<label>Sku</label> <input class="form-control" th:field="*{sku}" />
 							</div>
 							<div class="form-group">
 								<label>Barcode</label> <input class="form-control"
 									th:field="*{barcode}" />
-								<p th:each="error : ${#fields.errors('access')}"
-									th:text="${error}">Validation error</p>
+							</div>
+							<br/>
+							<div class="row form-group">
+								<div class="col">
+									<label>Brand</label> <br /> 
+									<select style="width:150px" th:field="*{brand}" class="btn btn-outline-primary">
+										<option class="btn-light" th:each="brand : ${brands}"
+											th:value="${brand.brand_id}" th:text="${brand.brand_name}"></option>
+									</select>
+								</div>
+								<div class="col">
+									<label>Glass Type</label> <br /> 
+									<select style="width:150px"
+										th:field="*{glass_type}" class="btn btn-outline-primary">
+										<option class="btn-light" th:each="glass : ${glassTypes}"
+											th:value="${glass.glass_type_id}"
+											th:text="${glass.glass_type_name}"></option>
+									</select>
+								</div>
+								<div class="col">
+									<label>Item Type</label> <br /> 
+									<select style="width:150px"
+										th:field="*{item_type}" class="btn btn-outline-primary">
+										<option class="btn-light" th:each="item : ${itemTypes}"
+											th:value="${item.item_type_id}"
+											th:text="${item.item_type_name}"></option>
+									</select>
+								</div>
+							</div>
+							<br/>
+							<div class="row form-group">
+								<div class="col">
+									<label>Starting Amount</label> <input class="form-control"
+										th:field="*{startingAmount}" />
+								</div>
+								<div class="col">
+									<label>Coming</label> <input class="form-control"
+										th:field="*{coming}" />
+								</div>
 							</div>
 							<br />
-							<button type="submit" class="btn btn-success">submit</button>
+							<a href="" th:href="@{/}" class="btn btn-danger">Cancel</a>
+							<button type="submit" class="btn btn-success">Submit</button>
 						</form>
 					</div>
 				</div>
-
 			</div>
 		</div>
+	</div>
 </body>
 </html>

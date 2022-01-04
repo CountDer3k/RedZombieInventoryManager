@@ -1,3 +1,10 @@
+ @media only screen and (min-width: 1200px) {
+  .d3Card-fullscreen{
+  	width: 50%;
+  }
+}
+
+
 .d3-dark-primary {
 	background-color: #261C2C;
 	color: white;

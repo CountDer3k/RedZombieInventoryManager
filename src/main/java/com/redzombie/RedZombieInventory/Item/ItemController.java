@@ -1,5 +1,7 @@
 package com.redzombie.RedZombieInventory.Item;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -15,7 +17,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 
+import com.redzombie.RedZombieInventory.Model.BrandModel;
+import com.redzombie.RedZombieInventory.Model.GlassTypeModel;
 import com.redzombie.RedZombieInventory.Model.ItemModel;
+import com.redzombie.RedZombieInventory.Model.ItemTypeModel;
 import com.redzombie.RedZombieInventory.aop.Log;
 
 @Controller
@@ -51,7 +56,16 @@ public class ItemController {
 	@GetMapping("/items/addItem")
 	@Log
 	public ModelAndView showAddItem() {
-		ModelAndView mv = new ModelAndView("addItem");
+		ModelAndView mv = new ModelAndView("items/addItem");
+		ItemDto itemDto = new ItemDto();
+		List<BrandModel> brands = itemService.getAllBrands();
+		List<GlassTypeModel> glassTypes = itemService.getAllGlassTypes();
+		List<ItemTypeModel> itemTypes= itemService.getAllItemTypes();
+		// Used to get the object back on POST
+		mv.getModelMap().addAttribute("itemDto", itemDto);
+		mv.getModelMap().addAttribute("brands", brands);
+		mv.getModelMap().addAttribute("glassTypes", glassTypes);
+		mv.getModelMap().addAttribute("itemTypes", itemTypes);
 		
 		return mv;
 	}
@@ -59,7 +73,7 @@ public class ItemController {
 	@PostMapping("/items/addItem")
 	@Log
 	public ModelAndView addItem(
-			@Validated @ModelAttribute("itemModel") ItemDto itemModel,
+			@Validated ItemDto itemDto,
 			BindingResult bindResult,
 			HttpServletRequest request,
 			Errors errors) {
@@ -68,7 +82,8 @@ public class ItemController {
 			return new ModelAndView("error");
 		}else {
 			ModelAndView mv;
-			//itemService.addItem(itemModel);
+			logger.info("dto information: "+ itemDto.toString());
+			itemService.addItemDto(itemDto);
 			mv = new ModelAndView("redirect:/");
 			return mv;
 		}
