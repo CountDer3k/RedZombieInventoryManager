@@ -16,8 +16,10 @@ public class ItemRowMapper implements RowMapper{
 		item.setName(rs.getString("name"));
 		item.setSku(rs.getString("sku"));
 		item.setBarcode(rs.getString("barcode"));
-		item.setBrand(rs.getString("brand"));
-		item.setGlass_type(rs.getString("glass_type"));
+		item.setBrand_id(rs.getInt("b.brand_id"));
+		item.setBrand(rs.getString("b.brand_name"));
+		item.setGlass_typeID(rs.getInt("gt.glass_type_id"));
+		item.setGlass_type(rs.getString("gt.glass_type_name"));
 		
 		item.setItem_type(rs.getInt("item_type"));
 		item.setPreviousMonthTotal(rs.getInt("previousMonthTotal"));
@@ -36,7 +38,7 @@ public class ItemRowMapper implements RowMapper{
 		item.setYear(rs.getInt("year"));
 		// convert from string to boolean
 		boolean isUV = (rs.getString("isUV")).equals("False") ? false : true;
-		item.setIsUV(isUV);
+		item.setUV(isUV);
 		
 		item.setCalcuations();
 		return item;

@@ -39,7 +39,7 @@ public class ItemRepository {
 
 	private final String GET_ALL_MONTH_YEAR = "SELECT * FROM MonthYear";
 
-	private final String GET_ALL_ITEMS_OF_THE_MONTH = "SELECT i.item_id, name, sku, barcode, b.brand_name AS brand, gt.glass_type_name AS glass_type, isUV, item_type, week1, week2, week3, week4, week5, previousMonthTotal, actualTotal, orderedLastMonth, orderedFromManufacturer, coming, `month`, `year` "
+	private final String GET_ALL_ITEMS_OF_THE_MONTH = "SELECT * "
 			+ "FROM Item i "
 			+ "INNER JOIN Brand b "
 			+ "ON i.brand = b.brand_id "
@@ -48,7 +48,7 @@ public class ItemRepository {
 			+ "WHERE month = :month AND year = :year "
 			+ "ORDER BY isUV, brand, glass_type, item_id";
 	
-	private final String GET_ITEM_INFO_FROM_ID = "SELECT i.item_id, name, sku, barcode, b.brand_name AS brand, gt.glass_type_name AS glass_type, isUV, item_type, week1, week2, week3, week4, week5, previousMonthTotal, actualTotal, orderedLastMonth, orderedFromManufacturer, coming, `month`, `year` "
+	private final String GET_ITEM_INFO_FROM_ID = "SELECT * "
 			+ "FROM Item i "
 			+ "INNER JOIN Brand b "
 			+ "ON i.brand = b.brand_id "
@@ -126,7 +126,6 @@ public class ItemRepository {
 				.addValue("month", mym.getMonth())
 				.addValue("year", mym.getYear());
 		List<ItemModel> items = (List<ItemModel>)jdbc.query(GET_ALL_ITEMS_OF_THE_MONTH, parameters, new ItemRowMapper());
-		logger.info("Items Count: " + items.size());
 		return AddBrandItem(items);
 	}
 
@@ -324,7 +323,7 @@ public class ItemRepository {
 		for(int i = 0; i < items.size(); i++) {
 			String brand = items.get(i).getBrand();
 			if(! brand.equals(currentBrand)) {
-				boolean isUV = items.get(i).getIsUV();
+				boolean isUV = items.get(i).isUV();
 				if(isUV) {
 					if(!uvBrandCreated) {
 						ItemModel brandItem = new ItemModel(true,"UV");
@@ -339,6 +338,7 @@ public class ItemRepository {
 					items.add(i, brandItem);
 				}
 			}
+			logger.info("ID: " + items.get(i).getItem_id() + " brand: " + items.get(i).getBrand() + " gtype: " + items.get(i).getGlass_type());
 		}
 		return items;
 	}

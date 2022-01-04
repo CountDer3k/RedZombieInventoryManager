@@ -10,7 +10,9 @@ public class ItemModel {
 	private String name = "";
 	private String sku = "";
 	private String barcode = "";
+	private int brand_id = 0;
 	private String brand = "";
+	private int glass_typeID = 0;
 	// Standard, Full Coverage, Privacy, Camera, Tablet, 
 	private String glass_type = "";
 	private boolean isUV = false;
@@ -153,6 +155,14 @@ public class ItemModel {
 		this.barcode = barcode;
 	}
 
+	public int getBrand_id() {
+		return brand_id;
+	}
+
+	public void setBrand_id(int brand_id) {
+		this.brand_id = brand_id;
+	}
+
 	public String getBrand() {
 		return brand;
 	}
@@ -161,12 +171,28 @@ public class ItemModel {
 		this.brand = brand;
 	}
 
+	public int getGlass_typeID() {
+		return glass_typeID;
+	}
+
+	public void setGlass_typeID(int glass_typeID) {
+		this.glass_typeID = glass_typeID;
+	}
+
 	public String getGlass_type() {
 		return glass_type;
 	}
 
 	public void setGlass_type(String glass_type) {
 		this.glass_type = glass_type;
+	}
+
+	public boolean isUV() {
+		return isUV;
+	}
+
+	public void setUV(boolean isUV) {
+		this.isUV = isUV;
 	}
 
 	public int getItem_type() {
@@ -257,6 +283,22 @@ public class ItemModel {
 		this.coming = coming;
 	}
 
+	public int getMonth() {
+		return month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
 	public int getExpectedTotal() {
 		return expectedTotal;
 	}
@@ -289,14 +331,6 @@ public class ItemModel {
 		this.orderedThisMonth = orderedThisMonth;
 	}
 
-	public boolean isBrandOnly() {
-		return isBrandOnly;
-	}
-
-	public void setBrandOnly(boolean isBrandOnly) {
-		this.isBrandOnly = isBrandOnly;
-	}
-
 	public int getOffset() {
 		return offset;
 	}
@@ -305,29 +339,12 @@ public class ItemModel {
 		this.offset = offset;
 	}
 
-	public int getMonth() {
-		return month;
+	public boolean isBrandOnly() {
+		return isBrandOnly;
 	}
 
-	public void setMonth(int month) {
-		this.month = month;
+	public void setBrandOnly(boolean isBrandOnly) {
+		this.isBrandOnly = isBrandOnly;
 	}
-
-	public int getYear() {
-		return year;
-	}
-
-	public void setYear(int year) {
-		this.year = year;
-	}
-
-	public boolean getIsUV() {
-		return isUV;
-	}
-
-	public void setIsUV(boolean isUV) {
-		this.isUV = isUV;
-	}
-	
 	
 }
