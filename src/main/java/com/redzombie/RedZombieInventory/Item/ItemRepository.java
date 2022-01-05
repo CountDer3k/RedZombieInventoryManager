@@ -38,7 +38,7 @@ public class ItemRepository {
 	private final String GET_ALL_BRANDS = "SELECT * FROM Brand";
 	private final String GET_ALL_GLASSTYPE = "SELECT * FROM Glass_Type";
 	private final String GET_ALL_ITEMTYPE = "SELECT * FROM Item_Type";
-	private final String GET_ALL_MONTH_YEAR = "SELECT * FROM MonthYear";
+	private final String GET_ALL_MONTH_YEAR = "SELECT * FROM MonthYear WHERE access != 'Now' ORDER BY monthYear_id DESC";
 	private final String GET_ALL_ITEMS_OF_THE_MONTH = "SELECT * "
 			+ "FROM Item i "
 			+ "INNER JOIN Brand b "
@@ -250,9 +250,6 @@ public class ItemRepository {
 	@Log
 	public boolean addItem(ItemModel item) {
 		try {
-			//?? Maybe change this in the db to instead take a string over an int
-			String actual = item.getActualTotal();
-			int actualInt = actual != null && !actual.equals("") ? Integer.parseInt(actual) : item.getExpectedTotal();
 			// Used to keep conversion on db vs model
 			String UV = item.isUV() ? "True" : "False";
 
@@ -266,7 +263,7 @@ public class ItemRepository {
 					.addValue("UV", UV)
 					.addValue("item_type", item.getItem_type())
 					.addValue("previousMonthTotal", item.getPreviousMonthTotal())
-					.addValue("actualTotal", actualInt)
+					.addValue("actualTotal", item.getActualTotal())
 					.addValue("week1", item.getWeek1())
 					.addValue("week2", item.getWeek2())
 					.addValue("week3", item.getWeek3())
@@ -351,14 +348,31 @@ public class ItemRepository {
 
 			// Iterate through each item
 			for(ItemModel item : items) {
-				// re-calculate values
+				// re-calculate values to have everything accurate
 				item.setCalcuations();
-				// Change values of each item according to what needs to be changed (according to the JavaDoc above)
-				//?? THis still needs to be done
-				String actual = item.getActualTotal();
-				int actualInt = actual != null && !actual.equals("") ? Integer.parseInt(actual) : item.getExpectedTotal();
+				
+				// Move 'Order Circle Total' to 'Previous Total'
+				item.setPreviousMonthTotal(item.getOrderCircleTotal());
+				// Move 'Ordered this month' to 'Ordred last month';
+				item.setOrderedLastMonth(item.getOrderedThisMonth());
 
-				item.setPreviousMonthTotal(actualInt);
+				// Clear Weeks 1-5 Columns
+				item.setWeek1(0);
+				item.setWeek2(0);
+				item.setWeek3(0);
+				item.setWeek4(0);
+				item.setWeek5(0);
+				// Clear 'Coming' 
+				item.setComing(0);
+				// Clear 'Ordered This Month'
+				item.setOrderedThisMonth(0);
+				// Clear 'Ordered from Manufacturer'
+				item.setOrderedFromManufacturer(0);
+				
+				// re-calculate to give proper actual value
+				item.setCalcuations();
+				// Clear 'Actual Total' Column
+				item.setActualTotal(String.valueOf(item.getExpectedTotal()));
 				// Change item's month/year
 				item.setMonth(mym.getMonth());
 				item.setYear(mym.getYear());
