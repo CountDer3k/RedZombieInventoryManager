@@ -24,6 +24,10 @@ import com.redzombie.RedZombieInventory.Model.ItemModel;
 import com.redzombie.RedZombieInventory.Model.ItemTypeModel;
 import com.redzombie.RedZombieInventory.aop.Log;
 
+import dto.ItemDto;
+import dto.actualTotalDto;
+import dto.comingDto;
+
 @Controller
 public class ItemController {
 	ItemService itemService;
@@ -34,6 +38,35 @@ public class ItemController {
 		this.itemService = itemService;
 	}
 
+	@PostMapping("/onChange/actual/{itemID}")
+	@Log
+	public ModelAndView actualTotalOnChange(
+			@PathVariable String itemID,
+			@Valid actualTotalDto dto,
+			BindingResult bindResult,
+			HttpServletRequest request,
+			Errors errors) {
+		
+		itemService.updateItemActualTotal(itemID, dto.getActualTotal());
+		return new ModelAndView("redirect:/");
+	}
+	
+	@PostMapping("/onChange/coming/{itemID}")
+	@Log
+	public ModelAndView comingTotalOnChange(
+			@PathVariable String itemID,
+			@Valid comingDto dto,
+			BindingResult bindResult,
+			HttpServletRequest request,
+			Errors errors) {
+		try {
+			int coming = Integer.parseInt(dto.getComingTotal());
+			itemService.updateItemComingTotal(itemID, coming);
+		}catch(Exception e) {
+			logger.error("ItemController - comingTotalOnChange() " + e.toString());
+		}
+		return new ModelAndView("redirect:/");
+	}
 
 
 	@GetMapping("/items/itemInfo/{itemID}")
@@ -80,7 +113,6 @@ public class ItemController {
 		}
 		else {
 			ModelAndView mv;
-			logger.info("dto information: "+ itemDto.toString());
 			itemService.addItemDto(itemDto);
 			mv = new ModelAndView("redirect:/");
 			return mv;

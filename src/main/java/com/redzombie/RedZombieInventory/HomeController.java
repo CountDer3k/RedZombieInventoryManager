@@ -15,6 +15,9 @@ import com.redzombie.RedZombieInventory.Model.ItemModel;
 import com.redzombie.RedZombieInventory.Model.monthYearModel;
 import com.redzombie.RedZombieInventory.aop.Log;
 
+import dto.actualTotalDto;
+import dto.comingDto;
+
 
 
 @Controller
@@ -70,12 +73,16 @@ public class HomeController {
 	private ModelAndView GridViewInfo(List<ItemModel> items, boolean isNow, String accessCode) {
 		try {
 			ModelAndView mv = new ModelAndView("index");
+			actualTotalDto actualDto = new actualTotalDto();
+			comingDto comingDto = new comingDto();
 			List<monthYearModel> months = itemService.getAllMonthYears();
 			mv.getModelMap().addAttribute("items", items);
 			mv.getModelMap().addAttribute("months", months);
 			// Used to show inputs instead of labels when using the bottom bar
 			mv.getModelMap().addAttribute("isNow", isNow);
 			mv.getModelMap().addAttribute("selectedButton", accessCode);
+			mv.getModelMap().addAttribute("actualInput", actualDto);
+			mv.getModelMap().addAttribute("comingInput", comingDto);
 			return mv;
 		}catch(Exception e) {
 			logger.error("HomeController - GridViewInfo() "+ e.toString());
