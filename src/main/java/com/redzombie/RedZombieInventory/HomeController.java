@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.redzombie.RedZombieInventory.Item.ItemService;
@@ -36,6 +37,24 @@ public class HomeController {
 	public ModelAndView home(){
 		return GridViewInfo();
 	}	
+	
+	@GetMapping("/previousMonth/{accessCode}")
+	@Log
+	public ModelAndView showPreviousMonth(@PathVariable String accessCode) {
+		try {
+			ModelAndView mv = new ModelAndView("index");
+			monthYearModel mym = itemService.getMonthYearFromAccessCode(accessCode);
+			logger.info("accessCode: " + mym.toString());
+			List<ItemModel> items = itemService.getAllItemForMonth(mym);
+			List<monthYearModel> months = itemService.getAllMonthYears();
+			mv.getModelMap().addAttribute("items", items);
+			mv.getModelMap().addAttribute("months", months);
+			return mv;
+		}catch(Exception e) {
+			logger.error("HomeController - GridViewInfo() "+ e.toString());
+			return null;
+		}
+	}
 
 
 	@GetMapping("/archiveMonth")
@@ -62,4 +81,5 @@ public class HomeController {
 			return null;
 		}
 	}
+	
 }

@@ -114,7 +114,7 @@
 				<div style="width: 20px"></div>
 				<th:block th:each="month : ${months}"
 					style="padding: 0px 10px;">
-					<a href="index.html" th:href="@{/}" th:text="${month.access}"
+					<a href="index.html" th:href="@{/previousMonth/{accessCode}(accessCode=${month.access})}" th:text="${month.access}"
 						class="btn btn-outline-dark" style="margin-top:5px;"></a>
 				</th:block>
 			</div>

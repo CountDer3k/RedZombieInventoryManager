@@ -38,15 +38,7 @@ public class ItemRepository {
 	private final String GET_ALL_BRANDS = "SELECT * FROM Brand";
 	private final String GET_ALL_GLASSTYPE = "SELECT * FROM Glass_Type";
 	private final String GET_ALL_ITEMTYPE = "SELECT * FROM Item_Type";
-	
-	private final String GET_GLASSTYPE_FROM_ID = "SELECT * FROM Glass_Type WHERE glass_type_id = :id";
-	private final String GET_ITEMTYPE_FROM_ID = "SELECT * FROM Item_Type WHERE item_type_id = :id";
-	private final String GET_BRAND_FROM_ID = "SELECT * FROM Brand WHERE brand_id = :id";
-	
-	private final String GET_MONTH_YEAR = "SELECT * From MonthYear WHERE access = :code";
-
 	private final String GET_ALL_MONTH_YEAR = "SELECT * FROM MonthYear";
-
 	private final String GET_ALL_ITEMS_OF_THE_MONTH = "SELECT * "
 			+ "FROM Item i "
 			+ "INNER JOIN Brand b "
@@ -55,7 +47,11 @@ public class ItemRepository {
 			+ "ON i.glass_type = gt.glass_type_id "
 			+ "WHERE month = :month AND year = :year "
 			+ "ORDER BY item_type, isUV, brand, glass_type, item_id";
-
+	
+	private final String GET_GLASSTYPE_FROM_ID = "SELECT * FROM Glass_Type WHERE glass_type_id = :id";
+	private final String GET_ITEMTYPE_FROM_ID = "SELECT * FROM Item_Type WHERE item_type_id = :id";
+	private final String GET_BRAND_FROM_ID = "SELECT * FROM Brand WHERE brand_id = :id";
+	private final String GET_MONTH_YEAR = "SELECT * From MonthYear WHERE access = :code";
 	private final String GET_ITEM_INFO_FROM_ID = "SELECT * "
 			+ "FROM Item i "
 			+ "INNER JOIN Brand b "
@@ -63,6 +59,12 @@ public class ItemRepository {
 			+ "INNER JOIN Glass_Type gt "
 			+ "ON i.glass_type = gt.glass_type_id "
 			+ "WHERE item_id = :itemID";
+	
+	
+
+	
+
+	
 
 	private final String ADD_ITEM = "INSERT INTO Item "
 			+ "(name, sku, barcode, brand, glass_type, isUV, item_type, previousMonthTotal, actualTotal,"
@@ -187,6 +189,20 @@ public class ItemRepository {
 		return AddBrandItem(items);
 	}
 
+	@Log
+	// Gets the month and year from the database
+	public monthYearModel getMonthYearFromAccessCode(String accessCode) {
+		try {
+			SqlParameterSource parameters = new MapSqlParameterSource()
+					.addValue("code", accessCode);
+			monthYearModel mym = (monthYearModel) jdbc.queryForObject(GET_MONTH_YEAR, parameters, new monthYearRowMapper());
+			return mym;
+		}catch(Exception e) {
+			logger.error("ItemRepository - getMonthYearFromAccessCode() " + e.toString());
+			return null;
+		}
+	}
+	
 	@Log
 	// Gets the month and year from the database
 	public monthYearModel getCurrentMonthYear() {
@@ -331,7 +347,7 @@ public class ItemRepository {
 			List<ItemModel> items = removeBrandItem(getAllItemsOfTheMonth());
 			// Get Month/Year & increment it 
 			monthYearModel mym_og = getCurrentMonthYear();
-			monthYearModel mym = increaseByAMonth(mym_og);
+			monthYearModel mym = increaseByAMonth(getCurrentMonthYear());
 
 			// Iterate through each item
 			for(ItemModel item : items) {
@@ -394,7 +410,6 @@ public class ItemRepository {
 					items.add(i, brandItem);
 				}
 			}
-			logger.info("ID: " + items.get(i).getItem_id() + " brand: " + items.get(i).getBrand() + " gtype: " + items.get(i).getGlass_type());
 		}
 		return items;
 	}
@@ -446,7 +461,7 @@ public class ItemRepository {
 			month = "January";
 			break;
 		case 2:
-			month = "Febuaray";
+			month = "February";
 			break;
 		case 3:
 			month = "March";
