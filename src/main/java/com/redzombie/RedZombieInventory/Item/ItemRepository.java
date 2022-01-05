@@ -252,6 +252,7 @@ public class ItemRepository {
 		try {
 			// Used to keep conversion on db vs model
 			String UV = item.isUV() ? "True" : "False";
+			int actual = item.getActualTotal() != null && !item.getActualTotal().equals("") ? Integer.parseInt(item.getActualTotal()) : item.getExpectedTotal();
 
 			KeyHolder keyHolder = new GeneratedKeyHolder();
 			SqlParameterSource parameters = new MapSqlParameterSource()
@@ -263,7 +264,7 @@ public class ItemRepository {
 					.addValue("UV", UV)
 					.addValue("item_type", item.getItem_type())
 					.addValue("previousMonthTotal", item.getPreviousMonthTotal())
-					.addValue("actualTotal", item.getActualTotal())
+					.addValue("actualTotal", actual)
 					.addValue("week1", item.getWeek1())
 					.addValue("week2", item.getWeek2())
 					.addValue("week3", item.getWeek3())
