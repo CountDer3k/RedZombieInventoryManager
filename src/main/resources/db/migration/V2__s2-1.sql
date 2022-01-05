@@ -1,4 +1,4 @@
-INSERT INTO MonthYear(nowMonth, nowYear, access) Values(11,2021, 'now');
+INSERT INTO MonthYear(nowMonth, nowYear, access) Values(11,2021, 'Now');
 
 INSERT INTO Item (name, sku, barcode, brand, glass_type, month, year, previousMonthTotal, isUV, item_type) 
 VALUES ('iPhone XR', 'IPHONE-XR-FCFA', '1873483835', 3, 1, 11, 2021, 150, 'False', 1);

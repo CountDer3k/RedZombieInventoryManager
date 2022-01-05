@@ -86,11 +86,13 @@
 					<div class="col">
 						<!-- <p th:text="${item.expectedTotal}"></p> -->
 						<input class="textbox-transparent" type="text" th:onchange=""
-							maxlength="4" th:value="${item.actualTotal}"></input>
+							maxlength="4" th:if="${isNow}" th:value="${item.actualTotal}"></input>
+						<p class="text-center" style="padding-top: 15px" th:unless="${isNow}" th:text="${item.actualTotal}"></p>
 					</div>
 					<div class="col">
 						<input class="textbox-transparent" style="color: red" type="text"
-							th:onchange="" maxlength="4" th:value="${item.coming}"></input>
+							th:onchange="" maxlength="4" th:if="${isNow}" th:value="${item.coming}"></input>
+							<p class="text-center" style="padding-top: 15px" th:unless="${isNow}" th:text="${item.coming}"></p>
 					</div>
 					<div class="col">
 						<p class="text-center" style="padding-top: 15px"
@@ -112,10 +114,12 @@
 			style="background-color: #f8f8ff; height: 50px; overflow: auto; white-space: nowrap;">
 			<div class="col">
 				<div style="width: 20px"></div>
+				<a href="index.html" th:href="@{/}" th:classappend="${selectedButton} == 'Now' ? 'btn btn-dark' : 'btn btn-outline-dark'" style="margin-top:5px;">Now</a>
 				<th:block th:each="month : ${months}"
 					style="padding: 0px 10px;">
-					<a href="index.html" th:href="@{/}" th:text="${month.access}"
-						class="btn btn-outline-dark" style="margin-top:5px;"></a>
+					<a href="index.html" th:href="@{/previousMonth/{accessCode}(accessCode=${month.access})}" th:text="${month.access}"
+						th:classappend="${selectedButton} == ${month.access} ? 'btn btn-dark' : 'btn btn-outline-dark'"
+						style="margin-top:5px;"></a>
 				</th:block>
 			</div>
 		</div>

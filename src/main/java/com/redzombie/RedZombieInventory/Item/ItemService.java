@@ -22,6 +22,24 @@ public class ItemService {
 	public ItemService(ItemRepository itemRepo) {
 		this.itemRepo = itemRepo;
 	}
+	
+	@Log
+	/** 
+	 * Returns an ItemModel based on the id passed in
+	 * 
+	 * @param	itemID	
+	 * @return			A single ItemModel
+	 * 
+	 * */
+	public ItemModel getItemInfo(String itemID) {
+		ItemModel item = itemRepo.getItemInfo(itemID);
+		return item;
+	}
+	
+	@Log
+	public monthYearModel getMonthYearFromAccessCode(String accessCode) {
+		return itemRepo.getMonthYearFromAccessCode(accessCode);
+	}
 
 	@Log
 	/** 
@@ -48,19 +66,6 @@ public class ItemService {
 	public List<ItemModel> getAllItemForMonth(monthYearModel mym){
 		List<ItemModel> items = itemRepo.getAllItemsOfTheMonth(mym);
 		return items;
-	}
-
-	@Log
-	/** 
-	 * Returns an ItemModel based on the id passed in
-	 * 
-	 * @param	itemID	
-	 * @return			A single ItemModel
-	 * 
-	 * */
-	public ItemModel getItemInfo(String itemID) {
-		ItemModel item = itemRepo.getItemInfo(itemID);
-		return item;
 	}
 
 	@Log
