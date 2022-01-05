@@ -35,21 +35,18 @@ public class HomeController {
 	@GetMapping("/")
 	@Log
 	public ModelAndView home(){
-		return GridViewInfo();
+		List<ItemModel> items = itemService.getAllItems();
+		return GridViewInfo(items, true);
 	}	
 	
 	@GetMapping("/previousMonth/{accessCode}")
 	@Log
 	public ModelAndView showPreviousMonth(@PathVariable String accessCode) {
 		try {
-			ModelAndView mv = new ModelAndView("index");
 			monthYearModel mym = itemService.getMonthYearFromAccessCode(accessCode);
-			logger.info("accessCode: " + mym.toString());
 			List<ItemModel> items = itemService.getAllItemForMonth(mym);
-			List<monthYearModel> months = itemService.getAllMonthYears();
-			mv.getModelMap().addAttribute("items", items);
-			mv.getModelMap().addAttribute("months", months);
-			return mv;
+			boolean isNow = accessCode.equals("Now") ? true : false;
+			return GridViewInfo(items, isNow);
 		}catch(Exception e) {
 			logger.error("HomeController - GridViewInfo() "+ e.toString());
 			return null;
@@ -64,17 +61,19 @@ public class HomeController {
 			// ?? Pop up should show on front end
 			logger.error("Failed to archive the month");
 		}
-		return GridViewInfo();
+		List<ItemModel> items = itemService.getAllItems();
+		return GridViewInfo(items, true);
 	}
 
 
-	private ModelAndView GridViewInfo() {
+	private ModelAndView GridViewInfo(List<ItemModel> items, boolean isNow) {
 		try {
 			ModelAndView mv = new ModelAndView("index");
-			List<ItemModel> items = itemService.getAllItems();
 			List<monthYearModel> months = itemService.getAllMonthYears();
 			mv.getModelMap().addAttribute("items", items);
 			mv.getModelMap().addAttribute("months", months);
+			// Used to show inputs instead of labels when using the bottom bar
+			mv.getModelMap().addAttribute("isNow", isNow);
 			return mv;
 		}catch(Exception e) {
 			logger.error("HomeController - GridViewInfo() "+ e.toString());

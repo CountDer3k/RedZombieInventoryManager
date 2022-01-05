@@ -208,7 +208,7 @@ public class ItemRepository {
 	public monthYearModel getCurrentMonthYear() {
 		try {
 			SqlParameterSource parameters = new MapSqlParameterSource()
-					.addValue("code", "now");
+					.addValue("code", "Now");
 			monthYearModel mym = (monthYearModel) jdbc.queryForObject(GET_MONTH_YEAR, parameters, new monthYearRowMapper());
 			return mym;
 		}catch(Exception e) {
@@ -316,7 +316,7 @@ public class ItemRepository {
 			SqlParameterSource parameters = new MapSqlParameterSource()
 					.addValue("month", mym.getMonth())
 					.addValue("year", mym.getYear())
-					.addValue("code", "now");
+					.addValue("code", "Now");
 			jdbc.update(CHANGE_MONTH_YEAR, parameters, keyHolder);
 
 			return true;
