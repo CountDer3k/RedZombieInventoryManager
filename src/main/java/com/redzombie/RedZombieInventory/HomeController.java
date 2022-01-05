@@ -34,7 +34,7 @@ public class HomeController {
 	@Log
 	public ModelAndView home(){
 		List<ItemModel> items = itemService.getAllItems();
-		return GridViewInfo(items, true);
+		return GridViewInfo(items, true, "Now");
 	}	
 	
 	@GetMapping("/previousMonth/{accessCode}")
@@ -44,7 +44,7 @@ public class HomeController {
 			monthYearModel mym = itemService.getMonthYearFromAccessCode(accessCode);
 			List<ItemModel> items = itemService.getAllItemForMonth(mym);
 			boolean isNow = accessCode.equals("Now") ? true : false;
-			return GridViewInfo(items, isNow);
+			return GridViewInfo(items, isNow, accessCode);
 		}catch(Exception e) {
 			logger.error("HomeController - GridViewInfo() "+ e.toString());
 			return null;
@@ -67,7 +67,7 @@ public class HomeController {
 	}
 
 
-	private ModelAndView GridViewInfo(List<ItemModel> items, boolean isNow) {
+	private ModelAndView GridViewInfo(List<ItemModel> items, boolean isNow, String accessCode) {
 		try {
 			ModelAndView mv = new ModelAndView("index");
 			List<monthYearModel> months = itemService.getAllMonthYears();
@@ -75,6 +75,7 @@ public class HomeController {
 			mv.getModelMap().addAttribute("months", months);
 			// Used to show inputs instead of labels when using the bottom bar
 			mv.getModelMap().addAttribute("isNow", isNow);
+			mv.getModelMap().addAttribute("selectedButton", accessCode);
 			return mv;
 		}catch(Exception e) {
 			logger.error("HomeController - GridViewInfo() "+ e.toString());

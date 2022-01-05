@@ -114,11 +114,12 @@
 			style="background-color: #f8f8ff; height: 50px; overflow: auto; white-space: nowrap;">
 			<div class="col">
 				<div style="width: 20px"></div>
-				<a href="index.html" th:href="@{/}" class="btn btn-outline-dark" style="margin-top:5px;">Now</a>
+				<a href="index.html" th:href="@{/}" th:classappend="${selectedButton} == 'Now' ? 'btn btn-dark' : 'btn btn-outline-dark'" style="margin-top:5px;">Now</a>
 				<th:block th:each="month : ${months}"
 					style="padding: 0px 10px;">
 					<a href="index.html" th:href="@{/previousMonth/{accessCode}(accessCode=${month.access})}" th:text="${month.access}"
-						class="btn btn-outline-dark" style="margin-top:5px;"></a>
+						th:classappend="${selectedButton} == ${month.access} ? 'btn btn-dark' : 'btn btn-outline-dark'"
+						style="margin-top:5px;"></a>
 				</th:block>
 			</div>
 		</div>
