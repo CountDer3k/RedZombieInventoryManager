@@ -1,4 +1,4 @@
-package com.redzombie.RedZombieInventory.Item;
+package dto;
 
 import javax.validation.constraints.NotNull;
 import org.springframework.lang.NonNull;

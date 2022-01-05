@@ -114,8 +114,6 @@ public class ItemModel {
 			orderedThisMonth = week1 + week2 + week3 + week4 + week5;
 			expectedTotal = (previousMonthTotal - orderedThisMonth) + coming;
 			int actual = actualTotal != null && !actualTotal.equals("") ? Integer.parseInt(actualTotal) : expectedTotal;
-			logger.info("expected: " + expectedTotal);
-			logger.info("actualTotal: " + actualTotal +" "+ "actual: " + actual);
 			orderCircleTotal = actual + coming;
 			offset = (actual - expectedTotal);
 			MIQ = orderedLastMonth / 2;

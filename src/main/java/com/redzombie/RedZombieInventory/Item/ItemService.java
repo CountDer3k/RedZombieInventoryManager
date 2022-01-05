@@ -13,6 +13,8 @@ import com.redzombie.RedZombieInventory.Model.ItemTypeModel;
 import com.redzombie.RedZombieInventory.Model.monthYearModel;
 import com.redzombie.RedZombieInventory.aop.Log;
 
+import dto.ItemDto;
+
 @Service
 public class ItemService {
 	private ItemRepository itemRepo;
@@ -22,7 +24,7 @@ public class ItemService {
 	public ItemService(ItemRepository itemRepo) {
 		this.itemRepo = itemRepo;
 	}
-	
+
 	@Log
 	/** 
 	 * Returns an ItemModel based on the id passed in
@@ -35,7 +37,7 @@ public class ItemService {
 		ItemModel item = itemRepo.getItemInfo(itemID);
 		return item;
 	}
-	
+
 	@Log
 	public monthYearModel getMonthYearFromAccessCode(String accessCode) {
 		return itemRepo.getMonthYearFromAccessCode(accessCode);
@@ -82,7 +84,7 @@ public class ItemService {
 	public List<BrandModel> getAllBrands(){
 		return itemRepo.GetAllBrands();
 	}
-	
+
 	@Log 
 	public List<ItemTypeModel> getAllItemTypes(){
 		return itemRepo.GetAllItemType();
@@ -103,6 +105,30 @@ public class ItemService {
 		return success;
 	}
 
+	@Log
+	public boolean updateItemActualTotal(String id, String actual) {
+		try {
+			ItemModel item = itemRepo.getItemInfo(id);
+			item.setActualTotal(actual);
+			return itemRepo.updateItem(item);
+		}catch(Exception e) {
+			logger.error("ItemService - updateItemActualTotal() " + e.toString());
+			return false;
+		}
+	}
+	
+	@Log 
+	public boolean updateItemComingTotal(String id, int coming) {
+		try {
+			ItemModel item = itemRepo.getItemInfo(id);
+			item.setComing(coming);
+			return itemRepo.updateItem(item);
+		}catch(Exception e) {
+			logger.error("ItemService - updateItemComingTotal() " + e.toString());
+			return false;
+		}
+	}
+
 
 	@Log
 	public boolean addItemDto(ItemDto dto) {
@@ -117,14 +143,14 @@ public class ItemService {
 			item.setBrand_id(dto.getBrand());
 			item.setGlass_typeID(dto.getGlass_type());
 			item.setItem_type(dto.getItem_type());
-			
+
 			String glassType = itemRepo.GetGlassTypeNameFromID(dto.getGlass_type());
 			item.setUV(glassType.equals("UV") ? true : false);
-			
+
 			monthYearModel mym = itemRepo.getCurrentMonthYear();
 			item.setMonth(mym.getMonth());
 			item.setYear(mym.getYear());
-			
+
 			addItem(item);
 			return true;
 		}catch(Exception e) {

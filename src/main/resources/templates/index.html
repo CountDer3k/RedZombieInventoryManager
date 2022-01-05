@@ -57,7 +57,8 @@
 
 			<th:block th:each="item : ${items}">
 				<!-- This happens when brand name changes -->
-				<div class="row d3Card" th:if="${item.isBrandOnly}" th:classappend="Brand ">
+				<div class="row d3Card" th:if="${item.isBrandOnly}"
+					th:classappend="Brand ">
 					<h2 th:text="${item.brand}"></h2>
 				</div>
 
@@ -84,15 +85,24 @@
 					<!-- ?? Create a form here that will call javascript methods to auto submit onChange 
 					in order in order for a java method be called & update the invenotry amount -->
 					<div class="col">
-						<!-- <p th:text="${item.expectedTotal}"></p> -->
-						<input class="textbox-transparent" type="text" th:onchange=""
-							maxlength="4" th:if="${isNow}" th:value="${item.actualTotal}"></input>
-						<p class="text-center" style="padding-top: 15px" th:unless="${isNow}" th:text="${item.actualTotal}"></p>
+						<form th:action="@{/onChange/actual/{itemID}(itemID=${item.item_id})}"
+							th:object="${actualInput}" method="POST" enctype="utf8">
+							<input class="textbox-transparent" type="text"
+								th:onchange="submit()" maxlength="4" th:if="${isNow}"
+								th:placeholder="${item.actualTotal}" th:field="*{actualTotal}"></input>
+							<p class="text-center" style="padding-top: 15px"
+								th:unless="${isNow}" th:text="${item.actualTotal}"></p>
+						</form>
 					</div>
 					<div class="col">
-						<input class="textbox-transparent" style="color: red" type="text"
-							th:onchange="" maxlength="4" th:if="${isNow}" th:value="${item.coming}"></input>
-							<p class="text-center" style="padding-top: 15px" th:unless="${isNow}" th:text="${item.coming}"></p>
+						<form th:action="@{/onChange/coming/{itemID}(itemID=${item.item_id})}"
+							th:object="${comingInput}" method="POST" enctype="utf8">
+							<input class="textbox-transparent" style="color: red" type="text"
+								th:onchange="submit()" maxlength="4" th:if="${isNow}"
+								th:placeholder="${item.coming}" th:field="*{comingTotal}"></input>
+							<p class="text-center" style="padding-top: 15px"
+								th:unless="${isNow}" th:text="${item.coming}"></p>
+						</form>
 					</div>
 					<div class="col">
 						<p class="text-center" style="padding-top: 15px"
@@ -114,12 +124,15 @@
 			style="background-color: #f8f8ff; height: 50px; overflow: auto; white-space: nowrap;">
 			<div class="col">
 				<div style="width: 20px"></div>
-				<a href="index.html" th:href="@{/}" th:classappend="${selectedButton} == 'Now' ? 'btn btn-dark' : 'btn btn-outline-dark'" style="margin-top:5px;">Now</a>
-				<th:block th:each="month : ${months}"
-					style="padding: 0px 10px;">
-					<a href="index.html" th:href="@{/previousMonth/{accessCode}(accessCode=${month.access})}" th:text="${month.access}"
+				<a href="index.html" th:href="@{/}"
+					th:classappend="${selectedButton} == 'Now' ? 'btn btn-dark' : 'btn btn-outline-dark'"
+					style="margin-top: 5px;">Now</a>
+				<th:block th:each="month : ${months}" style="padding: 0px 10px;">
+					<a href="index.html"
+						th:href="@{/previousMonth/{accessCode}(accessCode=${month.access})}"
+						th:text="${month.access}"
 						th:classappend="${selectedButton} == ${month.access} ? 'btn btn-dark' : 'btn btn-outline-dark'"
-						style="margin-top:5px;"></a>
+						style="margin-top: 5px;"></a>
 				</th:block>
 			</div>
 		</div>

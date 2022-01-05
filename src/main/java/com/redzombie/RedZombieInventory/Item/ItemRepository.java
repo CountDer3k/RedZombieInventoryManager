@@ -60,12 +60,6 @@ public class ItemRepository {
 			+ "ON i.glass_type = gt.glass_type_id "
 			+ "WHERE item_id = :itemID";
 	
-	
-
-	
-
-	
-
 	private final String ADD_ITEM = "INSERT INTO Item "
 			+ "(name, sku, barcode, brand, glass_type, isUV, item_type, previousMonthTotal, actualTotal,"
 			+ "week1, week2, week3, week4, week5, orderedLastMonth, orderedFromManufacturer, coming, month, year)"
@@ -74,10 +68,16 @@ public class ItemRepository {
 			+ ":month, :year)";
 
 	private final String ADD_MONTHYEAR = "INSERT INTO MonthYear(nowMonth, nowYear, access) VALUES(:month, :year, :access)";
-	private final String CHANGE_MONTH_YEAR = "UPDATE MonthYear SET nowMonth = :month, nowYear = :year WHERE access = :code";
-
 	//?? When this is implemented, check the brand name is not already in use
 	private final String ADD_NEW_BRAND ="";
+	
+	private final String UPDATE_MONTH_YEAR = "UPDATE MonthYear SET nowMonth = :month, nowYear = :year WHERE access = :code";
+	private final String UPDATE_ITEM = "UPDATE Item "
+			+ "SET name = :name, sku = :sku, barcode = :barcode, brand = :brand, glass_type = :glass_type, isUV = :UV, item_type = :item_type, "
+			+ "week1 =:week1, week2 = :week2, week3 = :week3, week4 =:week4, week5=:week5, "
+			+ "previousMonthTotal = :previousMonthTotal, actualTotal = :actualTotal, orderedLastMonth = :orderedLastMonth, orderedFromManufacturer = :orderedFromManufacturer, "
+			+ "coming = :coming, month = :month, year = :year "
+			+ "WHERE item_id = :itemID ";
 
 
 
@@ -314,7 +314,7 @@ public class ItemRepository {
 					.addValue("month", mym.getMonth())
 					.addValue("year", mym.getYear())
 					.addValue("code", "Now");
-			jdbc.update(CHANGE_MONTH_YEAR, parameters, keyHolder);
+			jdbc.update(UPDATE_MONTH_YEAR, parameters, keyHolder);
 
 			return true;
 		} catch(Exception e) {
@@ -323,6 +323,42 @@ public class ItemRepository {
 		}
 	}
 
+	
+	@Log
+	public boolean updateItem(ItemModel item) {
+		try {
+			String UV = item.isUV() ? "True" : "False";
+			
+			KeyHolder keyHolder = new GeneratedKeyHolder();
+			SqlParameterSource parameters = new MapSqlParameterSource()
+					.addValue("name", item.getName())
+					.addValue("sku", item.getSku())
+					.addValue("barcode", item.getBarcode())
+					.addValue("brand", item.getBrand_id())
+					.addValue("glass_type", item.getGlass_typeID())
+					.addValue("UV", UV)
+					.addValue("item_type", item.getItem_type())
+					.addValue("week1", item.getWeek1())
+					.addValue("week2", item.getWeek2())
+					.addValue("week3", item.getWeek3())
+					.addValue("week4", item.getWeek4())
+					.addValue("week5", item.getWeek5())
+					.addValue("previousMonthTotal", item.getPreviousMonthTotal())
+					.addValue("actualTotal", item.getActualTotal())
+					.addValue("orderedLastMonth", item.getOrderedLastMonth())
+					.addValue("orderedFromManufacturer", item.getOrderedFromManufacturer())
+					.addValue("coming", item.getComing())
+					.addValue("month", item.getMonth())
+					.addValue("year", item.getYear())
+					.addValue("itemID", item.getItem_id());
+			
+			jdbc.update(UPDATE_ITEM, parameters, keyHolder);	
+			return true;
+		} catch(Exception e) {
+			logger.error("ItemRepository - updateItem() " + e.toString());
+			return false;
+		}
+	}
 
 	//----------------------
 	// DATA MOVEMENT Methods
