@@ -1,22 +1,23 @@
 package com.redzombie.RedZombieInventory.Item;
 
+import javax.validation.constraints.NotNull;
 import org.springframework.lang.NonNull;
 
 public class ItemDto {
 
-	@NonNull
+	@NotNull
 	private String name;
 	
-	@NonNull
+	@NotNull
 	private String sku;
 	
-	@NonNull
+	@NotNull
 	private String barcode;
 	
-	@NonNull
+	@NotNull
 	private int brand;
 	
-	@NonNull
+	@NotNull
 	private int glass_type;
 	
 	private int item_type = 1;
@@ -24,7 +25,7 @@ public class ItemDto {
 	private int coming;
 	
 	// this will be put in the database as the 'previousMonthTotal'
-	@NonNull
+	@NotNull
 	private int startingAmount;
 
 	public String getName() {

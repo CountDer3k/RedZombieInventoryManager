@@ -3,6 +3,7 @@ package com.redzombie.RedZombieInventory.Item;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,35 +57,49 @@ public class ItemController {
 	@GetMapping("/items/addItem")
 	@Log
 	public ModelAndView showAddItem() {
-		ModelAndView mv = new ModelAndView("items/addItem");
 		ItemDto itemDto = new ItemDto();
-		List<BrandModel> brands = itemService.getAllBrands();
-		List<GlassTypeModel> glassTypes = itemService.getAllGlassTypes();
-		List<ItemTypeModel> itemTypes= itemService.getAllItemTypes();
-		// Used to get the object back on POST
-		mv.getModelMap().addAttribute("itemDto", itemDto);
-		mv.getModelMap().addAttribute("brands", brands);
-		mv.getModelMap().addAttribute("glassTypes", glassTypes);
-		
-		return mv;
+		return getMVForAddItem(itemDto, false);
 	}
 	
 	@PostMapping("/items/addItem")
 	@Log
 	public ModelAndView addItem(
-			@Validated ItemDto itemDto,
+			@Valid ItemDto itemDto,
 			BindingResult bindResult,
 			HttpServletRequest request,
 			Errors errors) {
 		
 		if(bindResult.hasErrors()) {
-			return new ModelAndView("error");
-		}else {
+			return getMVForAddItem(itemDto, true);
+		}
+		
+		if(itemDto.getName() == null || itemDto.getName().equals("") ||
+				itemDto.getSku() == null || itemDto.getSku().equals("") ||
+				itemDto.getBarcode() == null || itemDto.getBarcode().equals("")) {
+			return getMVForAddItem(itemDto,true);
+		}
+		else {
 			ModelAndView mv;
 			logger.info("dto information: "+ itemDto.toString());
 			itemService.addItemDto(itemDto);
 			mv = new ModelAndView("redirect:/");
 			return mv;
 		}
+	}
+	
+	
+	
+	private ModelAndView getMVForAddItem(ItemDto itemDto, boolean isShowingValidation) {
+		ModelAndView mv = new ModelAndView("items/addItem");
+		List<BrandModel> brands = itemService.getAllBrands();
+		List<GlassTypeModel> glassTypes = itemService.getAllGlassTypes();
+		List<ItemTypeModel> itemTypes= itemService.getAllItemTypes();
+		// Used to get the object back on POST
+		mv.getModelMap().addAttribute("showValidation", isShowingValidation);
+		mv.getModelMap().addAttribute("itemDto", itemDto);
+		mv.getModelMap().addAttribute("brands", brands);
+		mv.getModelMap().addAttribute("glassTypes", glassTypes);
+		
+		return mv;
 	}
 }

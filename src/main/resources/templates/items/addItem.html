@@ -36,14 +36,17 @@
 						<form th:action="@{/items/addItem}" th:object="${itemDto}"
 							method="POST" enctype="utf8">
 							<div class="form-group">
-								<label>Name</label> <input class="form-control"
+								<label>Name</label> <p th:if="${showValidation}" style="color:red">* Field Required</p> 
+								<input class="form-control"
 									th:field="*{name}" />
 							</div>
 							<div class="form-group">
-								<label>Sku</label> <input class="form-control" th:field="*{sku}" />
+								<label>Sku</label> <p th:if="${showValidation}" style="color:red">* Field Required</p>
+								 <input class="form-control" th:field="*{sku}" />
 							</div>
 							<div class="form-group">
-								<label>Barcode</label> <input class="form-control"
+								<label>Barcode</label> <p th:if="${showValidation}" style="color:red">* Field Required</p>
+								 <input class="form-control"
 									th:field="*{barcode}" />
 							</div>
 							<br/>
