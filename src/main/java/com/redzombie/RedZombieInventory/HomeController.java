@@ -78,14 +78,12 @@ public class HomeController {
 	@Log
 	public ModelAndView showImportScreenModel () {
 		ModelAndView mv = new ModelAndView("menu/ImportItems");
-		Integer weekVal = 0;
-		mv.getModelMap().addAttribute("weekVal", weekVal);
 		return mv;
 	}
 
-	@PostMapping("/importWeek/{weekValue}")
+	@PostMapping("/importWeek/")
 	@Log
-	public ModelAndView importExcelFile (Model model, MultipartFile file, @PathVariable @Valid int weekValue) throws IOException {	    
+	public ModelAndView importExcelFile (Model model, MultipartFile file) throws IOException {	    
 		// validate file
         if (file.isEmpty()) {
             model.addAttribute("message", "Please select a CSV file to upload.");
@@ -105,7 +103,6 @@ public class HomeController {
                 List<OrderCircleWeekModel> weekItems = csvToBean.parse();
 
                 // TODO: save into DB?
-                logger.info("week: " + weekValue);
                 for(OrderCircleWeekModel wItem: weekItems) {
                 	String sku = wItem.getSku();
                 	int weekCount = wItem.getCount();

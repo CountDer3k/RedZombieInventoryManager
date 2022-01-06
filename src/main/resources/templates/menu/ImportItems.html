@@ -41,13 +41,13 @@
 
 				<hr />
 				<h4>Import File</h4>
-				<form method="post" enctype="multipart/form-data" th:object=${weekVal}
-					th:action="@{/importWeek/{weekValue}(weekValue=${weekVal})}">
+				<form method="post" enctype="multipart/form-data"
+					th:action="@{/importWeek/}">
 					<input class="form-control" type="file" name="file" id="formFile"
 						accept=".csv">
 					<!-- .xls,.xlsx,  -->
 					<br /> 
-					<select style="width: 150px" th:field="*{weekVal}"
+					<select style="width: 150px"
 						class="btn btn-outline-primary">
 						<option value="0">Select Week</option>
 						<option value="1">Week 1</option>
