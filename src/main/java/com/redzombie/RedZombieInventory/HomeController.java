@@ -29,6 +29,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.redzombie.RedZombieInventory.Item.ItemService;
+import com.redzombie.RedZombieInventory.Model.ImportWeekModel;
 import com.redzombie.RedZombieInventory.Model.ItemModel;
 import com.redzombie.RedZombieInventory.Model.OrderCircleWeekModel;
 import com.redzombie.RedZombieInventory.Model.monthYearModel;
@@ -78,15 +79,24 @@ public class HomeController {
 	@Log
 	public ModelAndView showImportScreenModel () {
 		ModelAndView mv = new ModelAndView("menu/ImportItems");
-		Integer weekVal = 0;
-		mv.getModelMap().addAttribute("weekVal", weekVal);
+		ImportWeekModel iwm = new ImportWeekModel();
+		mv.getModelMap().addAttribute("importWeek", iwm);
 		return mv;
 	}
 
 	@PostMapping("/importWeek/{weekValue}")
 	@Log
 	public ModelAndView importExcelFile (Model model, MultipartFile file, @PathVariable @Valid int weekValue) throws IOException {	    
-		// validate file
+		/**
+		 * 
+		 * Add the ImportWeekModel into mv and then change the values for the form to take that object 
+		 * 
+		 * 
+		 */ 
+		
+		
+		
+		//validate file
         if (file.isEmpty()) {
             model.addAttribute("message", "Please select a CSV file to upload.");
             model.addAttribute("status", false);
