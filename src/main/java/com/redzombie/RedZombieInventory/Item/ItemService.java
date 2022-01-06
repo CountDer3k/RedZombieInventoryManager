@@ -37,6 +37,11 @@ public class ItemService {
 		ItemModel item = itemRepo.getItemInfo(itemID);
 		return item;
 	}
+	
+	@Log
+	public ItemModel getItemInfoFromSKU(String sku) {
+		return itemRepo.getItemInfoFromSKU(sku);
+	} 
 
 	@Log
 	public monthYearModel getMonthYearFromAccessCode(String accessCode) {
@@ -103,6 +108,11 @@ public class ItemService {
 	public boolean archiveMonth() {
 		boolean success = itemRepo.archiveMonth();
 		return success;
+	}
+	
+	@Log
+	public boolean updateItem(ItemModel item) {
+		return itemRepo.updateItem(item);
 	}
 
 	@Log

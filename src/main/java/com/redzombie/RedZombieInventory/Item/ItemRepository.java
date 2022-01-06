@@ -59,6 +59,13 @@ public class ItemRepository {
 			+ "INNER JOIN Glass_Type gt "
 			+ "ON i.glass_type = gt.glass_type_id "
 			+ "WHERE item_id = :itemID";
+	private final String GET_ITEM_FROM_SKU = "SELECT * "
+			+ "FROM Item i "
+			+ "INNER JOIN Brand b "
+			+ "ON i.brand = b.brand_id "
+			+ "INNER JOIN Glass_Type gt "
+			+ "ON i.glass_type = gt.glass_type_id "
+			+ "WHERE sku = :sku";
 	
 	private final String ADD_ITEM = "INSERT INTO Item "
 			+ "(name, sku, barcode, brand, glass_type, isUV, item_type, previousMonthTotal, actualTotal,"
@@ -239,6 +246,20 @@ public class ItemRepository {
 			return item;
 		}catch(Exception e) {
 			logger.error("ItemRepository - getItemInfo() " + e.toString());
+			return null;
+		}
+	}
+	
+	@Log
+	public ItemModel getItemInfoFromSKU(String sku) {
+		try {
+			SqlParameterSource parameters = new MapSqlParameterSource()
+					.addValue("sku", sku);
+			ItemModel item = (ItemModel)jdbc.queryForObject(GET_ITEM_FROM_SKU, parameters, new ItemRowMapper());
+			item.setCalcuations();
+			return item;
+		}catch(Exception e) {
+			logger.error("ItemRepository - getItemInfoFromSKU() " + e.toString());
 			return null;
 		}
 	}
