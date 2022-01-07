@@ -47,7 +47,7 @@ public class ItemRepository {
 			+ "ON i.glass_type = gt.glass_type_id "
 			+ "WHERE month = :month AND year = :year "
 			+ "ORDER BY item_type, isUV, brand, glass_type, item_id";
-	
+
 	private final String GET_GLASSTYPE_FROM_ID = "SELECT * FROM Glass_Type WHERE glass_type_id = :id";
 	private final String GET_ITEMTYPE_FROM_ID = "SELECT * FROM Item_Type WHERE item_type_id = :id";
 	private final String GET_BRAND_FROM_ID = "SELECT * FROM Brand WHERE brand_id = :id";
@@ -66,7 +66,7 @@ public class ItemRepository {
 			+ "INNER JOIN Glass_Type gt "
 			+ "ON i.glass_type = gt.glass_type_id "
 			+ "WHERE sku = :sku AND month = :month AND year = :year ";
-	
+
 	private final String ADD_ITEM = "INSERT INTO Item "
 			+ "(name, sku, barcode, brand, glass_type, isUV, item_type, previousMonthTotal, actualTotal,"
 			+ "week1, week2, week3, week4, week5, orderedLastMonth, orderedFromManufacturer, coming, month, year)"
@@ -77,7 +77,7 @@ public class ItemRepository {
 	private final String ADD_MONTHYEAR = "INSERT INTO MonthYear(nowMonth, nowYear, access) VALUES(:month, :year, :access)";
 	//?? When this is implemented, check the brand name is not already in use
 	private final String ADD_NEW_BRAND ="";
-	
+
 	private final String UPDATE_MONTH_YEAR = "UPDATE MonthYear SET nowMonth = :month, nowYear = :year WHERE access = :code";
 	private final String UPDATE_ITEM = "UPDATE Item "
 			+ "SET name = :name, sku = :sku, barcode = :barcode, brand = :brand, glass_type = :glass_type, isUV = :UV, item_type = :item_type, "
@@ -99,7 +99,7 @@ public class ItemRepository {
 	//--------------------
 	// GET Methods
 	//--------------------
-	
+
 	@Log
 	public String GetGlassTypeNameFromID(int id) {
 		try {
@@ -112,7 +112,7 @@ public class ItemRepository {
 			return null;
 		}
 	}
-	
+
 	@Log
 	public String GetItemTypeNameFromID(int id) {
 		try {
@@ -125,7 +125,7 @@ public class ItemRepository {
 			return null;
 		}
 	}
-	
+
 	@Log
 	public String GetBrandNameFromID(int id) {
 		try {
@@ -138,7 +138,7 @@ public class ItemRepository {
 			return null;
 		}
 	}
-	
+
 	@Log
 	public List<GlassTypeModel> GetAllGlassType(){
 		try {
@@ -150,7 +150,7 @@ public class ItemRepository {
 			return null;
 		}
 	}
-	
+
 	@Log
 	public List<ItemTypeModel> GetAllItemType(){
 		try {
@@ -189,11 +189,17 @@ public class ItemRepository {
 
 	@Log
 	public List<ItemModel> getAllItemsOfTheMonth(monthYearModel mym){
-		SqlParameterSource parameters = new MapSqlParameterSource()
-				.addValue("month", mym.getMonth())
-				.addValue("year", mym.getYear());
-		List<ItemModel> items = (List<ItemModel>)jdbc.query(GET_ALL_ITEMS_OF_THE_MONTH, parameters, new ItemRowMapper());
-		return AddBrandItem(items);
+		try {
+			SqlParameterSource parameters = new MapSqlParameterSource()
+					.addValue("month", mym.getMonth())
+					.addValue("year", mym.getYear());
+			List<ItemModel> items = (List<ItemModel>)jdbc.query(GET_ALL_ITEMS_OF_THE_MONTH, parameters, new ItemRowMapper());
+			return AddBrandItem(items);
+		} catch(Exception e) {
+			logger.error("ItemRepository - getAllItemsOfTheMonth() " + e.toString());
+			return new ArrayList<ItemModel>();
+		}
+
 	}
 
 	@Log
@@ -209,7 +215,7 @@ public class ItemRepository {
 			return null;
 		}
 	}
-	
+
 	@Log
 	// Gets the month and year from the database
 	public monthYearModel getCurrentMonthYear() {
@@ -249,7 +255,7 @@ public class ItemRepository {
 			return null;
 		}
 	}
-	
+
 	@Log
 	public ItemModel getItemInfoFromSKU(String sku) {
 		try {
@@ -348,12 +354,12 @@ public class ItemRepository {
 		}
 	}
 
-	
+
 	@Log
 	public boolean updateItem(ItemModel item) {
 		try {
 			String UV = item.isUV() ? "True" : "False";
-			
+
 			KeyHolder keyHolder = new GeneratedKeyHolder();
 			SqlParameterSource parameters = new MapSqlParameterSource()
 					.addValue("name", item.getName())
@@ -376,7 +382,7 @@ public class ItemRepository {
 					.addValue("month", item.getMonth())
 					.addValue("year", item.getYear())
 					.addValue("itemID", item.getItem_id());
-			
+
 			jdbc.update(UPDATE_ITEM, parameters, keyHolder);	
 			return true;
 		} catch(Exception e) {
@@ -411,7 +417,7 @@ public class ItemRepository {
 			for(ItemModel item : items) {
 				// re-calculate values to have everything accurate
 				item.setCalcuations();
-				
+
 				// Move 'Order Circle Total' to 'Previous Total'
 				item.setPreviousMonthTotal(item.getOrderCircleTotal());
 				// Move 'Ordered this month' to 'Ordred last month';
@@ -429,7 +435,7 @@ public class ItemRepository {
 				item.setOrderedThisMonth(0);
 				// Clear 'Ordered from Manufacturer'
 				item.setOrderedFromManufacturer(0);
-				
+
 				// re-calculate to give proper actual value
 				item.setCalcuations();
 				// Clear 'Actual Total' Column

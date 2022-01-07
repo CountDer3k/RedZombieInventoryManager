@@ -1,34 +1,21 @@
 package com.redzombie.RedZombieInventory;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.redzombie.RedZombieInventory.Item.ItemService;
@@ -46,7 +33,6 @@ import dto.comingDto;
 @Controller
 public class HomeController {
 	private Logger logger = LoggerFactory.getLogger(HomeController.class);
-	private String fileLocation;
 
 	ItemService itemService;
 
@@ -70,11 +56,18 @@ public class HomeController {
 		try {
 			monthYearModel mym = itemService.getMonthYearFromAccessCode(accessCode);
 			List<ItemModel> items = itemService.getAllItemForMonth(mym);
+			if(items.size() == 0) {
+				ModelAndView mv = new ModelAndView("error");
+				mv.getModelMap().addAttribute("message", "This Month doesn't exist");
+				return mv;
+			}
 			boolean isNow = accessCode.equals("Now") ? true : false;
 			return GridViewInfo(items, isNow, accessCode);
 		}catch(Exception e) {
 			logger.error("HomeController - GridViewInfo() "+ e.toString());
-			return new ModelAndView("error");
+			ModelAndView mv = new ModelAndView("error");
+			mv.getModelMap().addAttribute("message", "This Month doesn't exist");
+			return mv;
 		}
 	}
 	
@@ -90,13 +83,16 @@ public class HomeController {
 	@PostMapping("/importWeek/")
 	@Log
 	public ModelAndView importExcelFile (Model model, MultipartFile file, Integer week) throws IOException {
-	//public ModelAndView importExcelFile (Model model, ImportWeekModel iwm, Integer week) throws IOException {
 		// validate file
         if (file.isEmpty()) {
-            model.addAttribute("message", "Please select a CSV file to upload.");
+            model.addAttribute("message", "* Please select a CSV file to upload.");
             model.addAttribute("status", false);
         } else {
-
+        	if(week <=0 || week > 5) {
+        		ModelAndView mv = new ModelAndView("menu/ImportItems");
+        		mv.getModelMap().addAttribute("message", "* A Week must be selected");
+        		return mv;
+        	}
             // parse CSV file to create a list of OrderCircleWeekModel objects
             try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
 
@@ -118,28 +114,27 @@ public class HomeController {
                 	
                 	switch(week) {
                 	case 1:
-                		item.setWeek1(wItem.getCount());
+                		item.setWeek1(weekCount);
                 		break;
                 	case 2:
-                		item.setWeek2(wItem.getCount());
+                		item.setWeek2(weekCount);
                 		break;
                 	case 3:
-                		item.setWeek3(wItem.getCount());
+                		item.setWeek3(weekCount);
                 		break;
                 	case 4:
-                		item.setWeek4(wItem.getCount());
+                		item.setWeek4(weekCount);
                 		break;
                 	case 5:
-                		item.setWeek5(wItem.getCount());
+                		item.setWeek5(weekCount);
                 		break;
                 	}
-                	logger.info("Phone: " + item.getBrand() + " " + item.getName() + " Week: " + item.getWeek2());
                 	itemService.updateItem(item);
                 }
                 
 
             } catch (Exception ex) {
-                model.addAttribute("message", "An error occurred while processing the CSV file.");
+                model.addAttribute("message", "* An error occurred while processing the CSV file.");
                 model.addAttribute("status", false);
             }
         }	    
@@ -151,9 +146,10 @@ public class HomeController {
 	@Log
 	public ModelAndView archiveMonth() {
 		if(!itemService.archiveMonth()) {
-			// ?? Pop up should show on front end
 			logger.error("Failed to archive the month");
-			return new ModelAndView("error");
+			ModelAndView mv = new ModelAndView("index");
+			mv.getModelMap().addAttribute("message", "* Failed to archive the month");
+			return mv;
 		}
 		else {
 			ModelAndView mv = new ModelAndView("redirect:/");
@@ -163,8 +159,8 @@ public class HomeController {
 
 
 	private ModelAndView GridViewInfo(List<ItemModel> items, boolean isNow, String accessCode) {
+		ModelAndView mv = new ModelAndView("index");
 		try {
-			ModelAndView mv = new ModelAndView("index");
 			actualTotalDto actualDto = new actualTotalDto();
 			comingDto comingDto = new comingDto();
 			List<monthYearModel> months = itemService.getAllMonthYears();
@@ -178,6 +174,7 @@ public class HomeController {
 			return mv;
 		}catch(Exception e) {
 			logger.error("HomeController - GridViewInfo() "+ e.toString());
+			mv.getModelMap().addAttribute("message", "Weird Error occured on page load. Contact developer. Save this message: " + e.toString());
 			return new ModelAndView("error");
 		}
 	}

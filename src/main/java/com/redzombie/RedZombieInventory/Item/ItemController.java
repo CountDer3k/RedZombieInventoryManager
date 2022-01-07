@@ -59,13 +59,15 @@ public class ItemController {
 			BindingResult bindResult,
 			HttpServletRequest request,
 			Errors errors) {
+		ModelAndView mv = new ModelAndView("redirect:/");
 		try {
 			int coming = Integer.parseInt(dto.getComingTotal());
 			itemService.updateItemComingTotal(itemID, coming);
 		}catch(Exception e) {
 			logger.error("ItemController - comingTotalOnChange() " + e.toString());
+			mv.getModelMap().addAttribute("message", "Weird Error Occured. Contact developer. Save this message: " + e.toString());
 		}
-		return new ModelAndView("redirect:/");
+		return mv;
 	}
 
 
@@ -112,9 +114,18 @@ public class ItemController {
 			return getMVForAddItem(itemDto,true);
 		}
 		else {
-			ModelAndView mv;
-			itemService.addItemDto(itemDto);
-			mv = new ModelAndView("redirect:/");
+			ModelAndView mv = new ModelAndView("redirect:/");
+			boolean isSuccessful;
+			try {
+				isSuccessful = itemService.addItemDto(itemDto);
+				if(!isSuccessful) {
+					ModelAndView mvsame = new ModelAndView("items/itemInfo");
+					mvsame.getModelMap().addAttribute("message","* Error occured while adding item to database *");
+				}
+			}catch(Exception e) {
+				logger.error("ItemController - addItem() " + e.toString());
+				mv.getModelMap().addAttribute("message","* Error occured while adding item to database *");
+			}
 			return mv;
 		}
 	}
