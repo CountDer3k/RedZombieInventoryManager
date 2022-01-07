@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -19,6 +20,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +32,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.redzombie.RedZombieInventory.Item.ItemService;
+import com.redzombie.RedZombieInventory.Model.ImportWeekModel;
 import com.redzombie.RedZombieInventory.Model.ItemModel;
 import com.redzombie.RedZombieInventory.Model.OrderCircleWeekModel;
 import com.redzombie.RedZombieInventory.Model.monthYearModel;
@@ -78,12 +82,15 @@ public class HomeController {
 	@Log
 	public ModelAndView showImportScreenModel () {
 		ModelAndView mv = new ModelAndView("menu/ImportItems");
+		ImportWeekModel iwm = new ImportWeekModel();
+		mv.getModelMap().addAttribute("weekModel", iwm);
 		return mv;
 	}
 
 	@PostMapping("/importWeek/")
 	@Log
-	public ModelAndView importExcelFile (Model model, MultipartFile file) throws IOException {	    
+	public ModelAndView importExcelFile (Model model, MultipartFile file, Integer week) throws IOException {
+	//public ModelAndView importExcelFile (Model model, ImportWeekModel iwm, Integer week) throws IOException {
 		// validate file
         if (file.isEmpty()) {
             model.addAttribute("message", "Please select a CSV file to upload.");
@@ -106,8 +113,8 @@ public class HomeController {
                 for(OrderCircleWeekModel wItem: weekItems) {
                 	String sku = wItem.getSku();
                 	int weekCount = wItem.getCount();
-                	ItemModel item = itemService.getItemInfoFromSKU(sku);
-                	
+                	//?? Enable this when all items are imported
+                	//ItemModel item = itemService.getItemInfoFromSKU(sku);
                 	
                 	//itemService.updateItem(item);
                 }

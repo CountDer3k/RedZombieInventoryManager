@@ -44,11 +44,11 @@
 				<form method="post" enctype="multipart/form-data"
 					th:action="@{/importWeek/}">
 					<input class="form-control" type="file" name="file" id="formFile"
-						accept=".csv">
+						accept=".csv"> 
 					<!-- .xls,.xlsx,  -->
 					<br /> 
-					<select style="width: 150px"
-						class="btn btn-outline-primary">
+					<select style="width: 150px" name="week"
+						class="btn btn-outline-primary form-control">
 						<option value="0">Select Week</option>
 						<option value="1">Week 1</option>
 						<option value="2">Week 2</option>

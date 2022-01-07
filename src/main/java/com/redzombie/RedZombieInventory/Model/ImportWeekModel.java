@@ -1,10 +1,14 @@
 package com.redzombie.RedZombieInventory.Model;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class ImportWeekModel {
 
+	@NotNull
 	private MultipartFile file;
+	@NotNull
 	private int week = 0;
 	
 	
