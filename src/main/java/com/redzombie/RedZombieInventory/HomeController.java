@@ -114,9 +114,27 @@ public class HomeController {
                 	String sku = wItem.getSku();
                 	int weekCount = wItem.getCount();
                 	//?? Enable this when all items are imported
-                	//ItemModel item = itemService.getItemInfoFromSKU(sku);
+                	ItemModel item = itemService.getItemInfoFromSKU(sku);
                 	
-                	//itemService.updateItem(item);
+                	switch(week) {
+                	case 1:
+                		item.setWeek1(wItem.getCount());
+                		break;
+                	case 2:
+                		item.setWeek2(wItem.getCount());
+                		break;
+                	case 3:
+                		item.setWeek3(wItem.getCount());
+                		break;
+                	case 4:
+                		item.setWeek4(wItem.getCount());
+                		break;
+                	case 5:
+                		item.setWeek5(wItem.getCount());
+                		break;
+                	}
+                	logger.info("Phone: " + item.getBrand() + " " + item.getName() + " Week: " + item.getWeek2());
+                	itemService.updateItem(item);
                 }
                 
 

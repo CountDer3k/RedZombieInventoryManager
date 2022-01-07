@@ -65,7 +65,7 @@ public class ItemRepository {
 			+ "ON i.brand = b.brand_id "
 			+ "INNER JOIN Glass_Type gt "
 			+ "ON i.glass_type = gt.glass_type_id "
-			+ "WHERE sku = :sku";
+			+ "WHERE sku = :sku AND month = :month AND year = :year ";
 	
 	private final String ADD_ITEM = "INSERT INTO Item "
 			+ "(name, sku, barcode, brand, glass_type, isUV, item_type, previousMonthTotal, actualTotal,"
@@ -253,8 +253,11 @@ public class ItemRepository {
 	@Log
 	public ItemModel getItemInfoFromSKU(String sku) {
 		try {
+			monthYearModel mym = getCurrentMonthYear();
 			SqlParameterSource parameters = new MapSqlParameterSource()
-					.addValue("sku", sku);
+					.addValue("sku", sku)
+					.addValue("month", mym.getMonth())
+					.addValue("year", mym.getYear());
 			ItemModel item = (ItemModel)jdbc.queryForObject(GET_ITEM_FROM_SKU, parameters, new ItemRowMapper());
 			item.setCalcuations();
 			return item;
