@@ -1,17 +1,40 @@
 package com.redzombie.RedZombieInventory;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.opencsv.CSVReader;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import com.redzombie.RedZombieInventory.Item.ItemService;
+import com.redzombie.RedZombieInventory.Model.ImportWeekModel;
 import com.redzombie.RedZombieInventory.Model.ItemModel;
+import com.redzombie.RedZombieInventory.Model.OrderCircleWeekModel;
 import com.redzombie.RedZombieInventory.Model.monthYearModel;
 import com.redzombie.RedZombieInventory.aop.Log;
 
@@ -23,6 +46,7 @@ import dto.comingDto;
 @Controller
 public class HomeController {
 	private Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private String fileLocation;
 
 	ItemService itemService;
 
@@ -50,10 +74,78 @@ public class HomeController {
 			return GridViewInfo(items, isNow, accessCode);
 		}catch(Exception e) {
 			logger.error("HomeController - GridViewInfo() "+ e.toString());
-			return null;
+			return new ModelAndView("error");
 		}
 	}
+	
+	@GetMapping("/importWeek")
+	@Log
+	public ModelAndView showImportScreenModel () {
+		ModelAndView mv = new ModelAndView("menu/ImportItems");
+		ImportWeekModel iwm = new ImportWeekModel();
+		mv.getModelMap().addAttribute("weekModel", iwm);
+		return mv;
+	}
 
+	@PostMapping("/importWeek/")
+	@Log
+	public ModelAndView importExcelFile (Model model, MultipartFile file, Integer week) throws IOException {
+	//public ModelAndView importExcelFile (Model model, ImportWeekModel iwm, Integer week) throws IOException {
+		// validate file
+        if (file.isEmpty()) {
+            model.addAttribute("message", "Please select a CSV file to upload.");
+            model.addAttribute("status", false);
+        } else {
+
+            // parse CSV file to create a list of OrderCircleWeekModel objects
+            try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+
+                // create csv bean reader
+                CsvToBean<OrderCircleWeekModel> csvToBean = new CsvToBeanBuilder(reader)
+                        .withType(OrderCircleWeekModel.class)
+                        .withIgnoreLeadingWhiteSpace(true)
+                        .build();
+
+                // convert `CsvToBean` object to list of OrderCircleWeekModel
+                List<OrderCircleWeekModel> weekItems = csvToBean.parse();
+
+                // TODO: save into DB?
+                for(OrderCircleWeekModel wItem: weekItems) {
+                	String sku = wItem.getSku();
+                	int weekCount = wItem.getCount();
+                	//?? Enable this when all items are imported
+                	ItemModel item = itemService.getItemInfoFromSKU(sku);
+                	
+                	switch(week) {
+                	case 1:
+                		item.setWeek1(wItem.getCount());
+                		break;
+                	case 2:
+                		item.setWeek2(wItem.getCount());
+                		break;
+                	case 3:
+                		item.setWeek3(wItem.getCount());
+                		break;
+                	case 4:
+                		item.setWeek4(wItem.getCount());
+                		break;
+                	case 5:
+                		item.setWeek5(wItem.getCount());
+                		break;
+                	}
+                	logger.info("Phone: " + item.getBrand() + " " + item.getName() + " Week: " + item.getWeek2());
+                	itemService.updateItem(item);
+                }
+                
+
+            } catch (Exception ex) {
+                model.addAttribute("message", "An error occurred while processing the CSV file.");
+                model.addAttribute("status", false);
+            }
+        }	    
+		return new ModelAndView("menu/ImportItems");
+	}
+	
 
 	@GetMapping("/archiveMonth")
 	@Log
@@ -61,7 +153,7 @@ public class HomeController {
 		if(!itemService.archiveMonth()) {
 			// ?? Pop up should show on front end
 			logger.error("Failed to archive the month");
-			return null;
+			return new ModelAndView("error");
 		}
 		else {
 			ModelAndView mv = new ModelAndView("redirect:/");
@@ -86,7 +178,7 @@ public class HomeController {
 			return mv;
 		}catch(Exception e) {
 			logger.error("HomeController - GridViewInfo() "+ e.toString());
-			return null;
+			return new ModelAndView("error");
 		}
 	}
 	

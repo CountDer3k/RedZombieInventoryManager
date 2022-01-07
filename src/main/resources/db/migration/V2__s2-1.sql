@@ -1,9 +1,9 @@
 INSERT INTO MonthYear(nowMonth, nowYear, access) Values(11,2021, 'Now');
 
 INSERT INTO Item (name, sku, barcode, brand, glass_type, month, year, previousMonthTotal, isUV, item_type) 
-VALUES ('iPhone XR', 'IPHONE-XR-FCFA', '1873483835', 3, 1, 11, 2021, 150, 'False', 1);
+VALUES ('iPhone XR', 'IPHONE-XR-STNDR', '1873483835', 3, 1, 11, 2021, 150, 'False', 1);
 INSERT INTO Item (name, sku, barcode, brand, glass_type, month, year, previousMonthTotal, isUV, item_type) 
-VALUES ('iPhone XS', 'IPHONE-XS-FCFA', '1873483835', 3, 1, 11, 2021, 90, 'False', 1);
+VALUES ('iPhone XS', 'IPHONE-XS-STNDR', '1873483835', 3, 1, 11, 2021, 90, 'False', 1);
 INSERT INTO Item (name, sku, barcode, brand, glass_type, month, year, previousMonthTotal, isUV, item_type) 
 VALUES ('iPhone XR', 'IPHONE-XR-FCFA', '1873483835', 3, 2, 11, 2021,204, 'False', 1);
 INSERT INTO Item (name, sku, barcode, brand, glass_type, month, year, previousMonthTotal, isUV, item_type) 
@@ -11,7 +11,7 @@ VALUES ('iPhone XS', 'IPHONE-XS-FCFA', '1873483835', 3, 2, 11, 2021, 45, 'False'
 INSERT INTO Item (name, sku, barcode, brand, glass_type, month, year, previousMonthTotal, isUV, item_type) 
 VALUES ('iPhone XS MAX', 'IPHONE-XSMAX-FCFA', '1873483835', 3, 2, 11, 2021, 78, 'False', 1);
 INSERT INTO Item (name, sku, barcode, brand, glass_type, month, year, previousMonthTotal, isUV, item_type) 
-VALUES ('iPhone 13', 'IPHONE-13-FCFA', '1873483835', 3, 3, 11, 2021, 100, 'False', 1);
+VALUES ('iPhone 13', 'IPHONE-13-PRVCY', '1873483835', 3, 3, 11, 2021, 100, 'False', 1);
 INSERT INTO Item (name, sku, barcode, brand, glass_type, month, year, previousMonthTotal, isUV, item_type) 
 VALUES ('iPhone 13 Pro', 'IPHONE-13Pro-FCFA', '1873483835', 3, 2, 11, 2021,56, 'False', 1);
 
