@@ -2,8 +2,8 @@ version: '3.8'
 
 x-db-variables: &db-variables
  MYSQL_DATABASE: rzinv
- MYSQL_ROOT_PASSWORD: root
- MYSQL_USER: admin
+ MYSQL_ROOT_PASSWORD: rootR3dZ0mb13!
+ MYSQL_USER: RedZombieAdmin
  MYSQL_PASSWORD: R3dZ0mb13!
  MYSQL_PORT: 3306
  
@@ -19,12 +19,10 @@ services:
      - 8080:8080
     environment:
       SPRING_DATASOURCE_DATABASE: rzinv
-      SPRING_DATASOURCE_ROOT_PASSWORD: root
-      SPRING_DATASOURCE_USER: admin
+      SPRING_DATASOURCE_ROOT_PASSWORD: rootR3dZ0mb13!
+      SPRING_DATASOURCE_USER: RedZombieAdmin
       SPRING_DATASOURCE_PASSWORD: R3dZ0mb13!
-      SPRING_DATASOURCE_PORT: 3306
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/rzinv?useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true
-
+      SPRING_DATASOURCE_URL: jdbc:mysql://34.133.158.65:3306/rzinv?useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true
   mysql:
     image: "mariadb:10.6.4-focal"
     ports:
