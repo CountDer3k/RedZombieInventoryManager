@@ -18,7 +18,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
-<body class="">
+<body class="background-style1">
 	<!-- Top Bar -->
 	<div class="d3Card stickyDiv">
 		<div class="row">
@@ -26,7 +26,7 @@
 		</div>
 		<hr />
 		<div class="row sidePadding">
-			<div class="col">
+			<div class="col-3">
 				<h3>Name</h3>
 			</div>
 			<div class="col">
@@ -66,11 +66,16 @@
 				(${item.glass_type} == 'Standard' ? glass-Standard : '' ) +
 				(${item.glass_type} == 'Privacy' ? glass-Privacy : '' ) +
 				(${item.glass_type} == 'FCFA' ? glass-FCFA : '' ) +
-				(${item.glass_type} == 'Camera' ? glass-camera : '' ) +
-				(${item.glass_type} == 'Tablet' ? glass-tablet : '' )+
+				(${item.glass_type} == 'FCSA' ? glass-FCSA : '' ) +
+				(${item.glass_type} == 'Watches' ? glass-Watches : '' ) +
+				(${item.glass_type} == 'OtterBox Compatible' ? glass-Otter : '' ) +
+				(${item.glass_type} == '3D/Curved FA' ? glass-3D : '' ) +
+				(${item.glass_type} == 'Camera Glass' ? glass-camera : '' ) +
+				(${item.glass_type} == 'Tablet Glass' ? glass-tablet : '' )+
+				(${item.glass_type} == 'Back Glass' ? glass-back : '' )+
 				(${item.glass_type} == 'SideAdhesive' ? glass-sideAdhesive : '') + 
 				(${item.glass_type} == 'UV' ? glass-UV : '')">
-					<div class="col">
+					<div class="col-3">
 						<a href="index.html" style="color: white"
 							th:href="@{/items/itemInfo/{itemID}(itemID=${item.item_id})}"
 							th:text="${item.name}"></a> <br /> <label th:text="${item.sku}"

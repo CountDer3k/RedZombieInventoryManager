@@ -37,6 +37,7 @@ INSERT INTO Glass_Type(glass_type_name) VALUES("Tablet Glass");
 INSERT INTO Glass_Type(glass_type_name) VALUES("FCSA");
 INSERT INTO Glass_Type(glass_type_name) VALUES("Watches");
 INSERT INTO Glass_Type(glass_type_name) VALUES("UV");
+INSERT INTO Glass_Type(glass_type_name) VALUES("OtterBox Compatible");
 
 INSERT INTO Item_Type(item_type_name) VALUES("Glass");
 INSERT INTO Item_Type(item_type_name) VALUES("Case");

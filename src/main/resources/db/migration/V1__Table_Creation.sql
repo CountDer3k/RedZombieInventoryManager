@@ -40,3 +40,5 @@ CREATE TABLE MonthYear(
 	nowYear INT NOT NULL,
 	access TINYTEXT NOT NULL
 );
+
+INSERT INTO MonthYear(nowMonth, nowYear, access) Values(1,2022, 'Now');
