@@ -137,7 +137,8 @@ a.h2:hover, a.h2:active {
 
   .dropdown-button{
 	  width:100%;
-	  text-align: center;
+	  /* height:20px; */
+	  /* border-bottom: 1px solid rgb(182, 182, 182) !important; */
   }
 
 /* Change color of dropdown links on hover */

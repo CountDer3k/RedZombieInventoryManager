@@ -1,13 +1,5 @@
 -- January Values for previous month
 
--- Glass Type:
--- 1 = Standard
--- 2 = FCFA
--- 3 = Privacy
--- 4 = 
--- 5 = backglass
--- 6 = camera
-
 -- Alcatel
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Streak', 'ZG-ALCATEL-STREAK', '602401594203', 0, 1, 1, 1, 2022, 'False', 1);
@@ -42,14 +34,18 @@ VALUES ('Apprise', 'ZG-ALCATEL-APPRISE-FC-FA', '697478450941', 0, 1, 2, 1, 2022,
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('3V', 'ZG-ALCATEL-3V-FC', '697478450644', 0, 1, 2, 1, 2022, 'False', 1);
 
+-- -------
 -- Amazon
+-- -------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Fire 7 Inch', 'ZG-AMAZON-FIRE7-STANDARD', '789185720018', 0, 2, 7, 1, 2022, 'False', 1);
 
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Fire 8 Inch', 'ZG-AMAZON-FIRE8-STANDARD', '789185720025', 0, 2, 7, 1, 2022, 'False', 1);
 
+-- -------
 -- Apple
+-- -------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('iWatch 38mm series 0-2', 'ZG-APPLE-IWATCH38', '789185720377', 0, 3, 1, 1, 2022, 'False', 1);
 
@@ -317,7 +313,23 @@ VALUES ('iPad Mini 4', 'ZG-APPLE-IPADMINI4', '789185720803', 0, 3, 7, 1, 2022, '
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('iPad Mini 6 (8.3")', 'ZG-APPLE-IPADMINI6', '786468689802', 0, 3, 7, 1, 2022, 'False', 1);
 
+-- Otter Box Compatible Phonea
+INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
+VALUES ('iPhone 12 Mini', 'ZG-APPLE-IPHONE-12MINI-OTTER', '697478450736', 0, 3, 11, 1, 2022, 'False', 1);
+
+INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
+VALUES ('iPhone 12 Pro Max', 'ZG-APPLE-IPHONE-12MAX-OTTER', '697478450668', 0, 3, 11, 1, 2022, 'False', 1);
+
+INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
+VALUES ('iPhone 13 / 13 Pro', 'ZG-APPLE-IPHONE-13-OTTER', '786468689628', 0, 3, 11, 1, 2022, 'False', 1);
+
+INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
+VALUES ('iPhone 13 Pro Max', 'ZG-APPLE-IPHONE-13MAX-OTTER', '786468689635', 0, 3, 11, 1, 2022, 'False', 1);
+
+
+-- --------
 -- Cricket
+-- --------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Icon', 'RZ-CRICKET-ICON', '697478450361', 0, 4, 1, 1, 2022, 'False', 1);
 
@@ -342,7 +354,9 @@ VALUES ('Dream 5G', 'ZG-CRICKET-DREAM-FC-FA', '786468689819', 0, 4, 2, 1, 2022, 
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Debut', 'ZG-CRICKET-DEBUT-FC-FA', '786468689901', 0, 4, 2, 1, 2022, 'False', 1);
 
+-- -------
 -- Google
+-- -------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Pixel', 'ZG-GOOGLE-PIXEL', '602401594234', 0, 5, 1, 1, 2022, 'False', 1);
 
@@ -388,7 +402,9 @@ VALUES ('Pixel 3', 'ZG-GOOGLE-PIXEL3-3D', '713289110406', 0, 5, 4, 1, 2022, 'Fal
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Pixel 3 XL', 'ZG-GOOGLE-PIXEL3XL-3D', '713289110413', 0, 5, 4, 1, 2022, 'False', 1);
 
+-- -------
 -- HTC
+-- -------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Desire 510', 'ZG-HTC-DESIRE510', '881314393930', 0, 6, 1, 1, 2022, 'False', 1);
 
@@ -413,7 +429,9 @@ VALUES ('One M10', 'ZG-HTC-ONEM10', '602401593695', 0, 6, 1, 1, 2022, 'False', 1
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('One U11', 'ZG-HTC-U11', '789185720667', 0, 6, 1, 1, 2022, 'False', 1);
 
+-- -------
 -- LG
+-- -------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Spree/K4', 'ZG-LG-SPREE/K4', '602401594272', 0, 7, 1, 1, 2022, 'False', 1);
 
@@ -543,11 +561,15 @@ VALUES ('V30', 'ZG-LG-V30-3D', '789185720636', 0, 7, 4, 1, 2022, 'False', 1);
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('V40', 'ZG-LG-V40-3D', '713289110772', 0, 7, 4, 1, 2022, 'False', 1);
 
+-- ----------
 -- Microsoft
+-- ----------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Surface Pro', 'ZG-MICROSOFT-SURFACEPRO4', '789185542818', 0, 8, 7, 1, 2022, 'False', 1);
 
+-- ---------
 -- Motorola
+-- ---------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('E 2nd Gen', 'ZG-MOTO-E2NDGEN', '881314394623', 0, 9, 1, 1, 2022, 'False', 1);
 
@@ -620,11 +642,15 @@ VALUES ('Z2 Play', 'MOTO-Z2-PLAY-FC-SA', '713289110581', 0, 9, 8, 1, 2022, 'Fals
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('E4', 'ZG-MOTO-E4-FULLCOVERAGE', '789185720575', 0, 9, 8, 1, 2022, 'False', 1);
 
+-- ---------
 -- Nintendo
+-- ---------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Switch', 'ZG-NINTENDO-SWITCH', '789185720278', 0, 10, 7, 1, 2022, 'False', 1);
 
+-- -------
 -- Nokia 
+-- -------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('C5 Endi', 'ZG-NOKIA-C5ENDI', '697478450163', 0, 11, 1, 1, 2022, 'False', 1);
 
@@ -640,11 +666,15 @@ VALUES ('3.1+', 'NOKIA-3.1PLUS-FC-FA', '617831913982', 0, 11, 2, 1, 2022, 'False
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('3.1 C', 'NOKIA3.1A-3.1C-FC-FA', '617831914293', 0, 11, 2, 1, 2022, 'False', 1);
 
+-- ---------
 -- One Plus
+-- ---------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('One Plus 3', 'ZG-ONEPLUS-3', '789185720414', 0, 12, 1, 1, 2022, 'False', 1);
 
+-- --------
 -- Samsung
+-- --------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Core Prime / Prevail ', 'ZG-SAMSUNG-COREPRIME/PREVAIL', '881314394760', 0, 13, 1, 1, 2022, 'False', 1);
 
@@ -912,7 +942,9 @@ VALUES ('Galaxy Watch 42mm', 'ZG-GALAXY-WATCH-42MM', '617831914309', 0, 13, 9, 1
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Galaxy Watch 46mm', 'ZG-GALAXY-WATCH-46MM', '617831914163', 0, 13, 9, 1, 2022, 'False', 1);
 
+-- -------
 -- UV
+-- -------
 INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
 VALUES ('Galaxy S7 Edge', 'ZG-SAMSUNG-GS7EDGE-UV', '617831913722', 0, 13, 10, 1, 2022, 'True', 1);
 
@@ -1019,8 +1051,8 @@ INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, mon
 VALUES ('V30', 'ZG-SAMSUNG-LGV30-UV', '697478450323', 0, 7, 10, 1, 2022, 'True', 1);
 
 -- Cases
---INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
---VALUES ('a', 'L', '881314394760', 0, 13, 10, 1, 2022, 'False', 1);
+-- INSERT INTO Item (name, sku, barcode, previousMonthTotal, brand, glass_type, month, year, isUV, item_type) 
+-- VALUES ('a', 'L', '881314394760', 0, 13, 10, 1, 2022, 'False', 1);
 
 
 
