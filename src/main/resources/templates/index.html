@@ -3,19 +3,16 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<link rel="icon" type="image/ico" th:href="@{../static/favicon.ico}">
-<link th:href="@{/css/main.css}" rel="stylesheet">
-<link rel="stylesheet"
-	href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-	integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
-	crossorigin="anonymous" />
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
-	integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
-	crossorigin="anonymous">
-<title>RedZombie Inventory</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="icon" type="image/ico" th:href="@{../static/favicon.ico}">
+	<link th:href="@{/css/main.css}" rel="stylesheet">
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+		integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+		integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+	<title>RedZombie Inventory</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
 <body class="background-style1">
@@ -53,13 +50,11 @@
 
 			<th:block th:each="item : ${items}">
 				<!-- This happens when brand name changes -->
-				<div class="row d3Card" th:if="${item.isBrandOnly}"
-					th:classappend="Brand ">
+				<div class="row d3Card" th:if="${item.isBrandOnly}" th:classappend="Brand ">
 					<h2 th:text="${item.brand}"></h2>
 				</div>
 
-				<div class="row d3Card item-cell" th:unless="${item.isBrandOnly}"
-					th:classappend="
+				<div class="row d3Card item-cell" th:unless="${item.isBrandOnly}" th:classappend="
 				(${item.glass_type} == 'Standard' ? glass-Standard : '' ) +
 				(${item.glass_type} == 'Privacy' ? glass-Privacy : '' ) +
 				(${item.glass_type} == 'FCFA' ? glass-FCFA : '' ) +
@@ -74,44 +69,39 @@
 				(${item.glass_type} == 'UV' ? glass-UV : '')">
 					<div class="col-3">
 						<a href="index.html" style="color: white"
-							th:href="@{/items/itemInfo/{itemID}(itemID=${item.item_id})}"
-							th:text="${item.name}"></a> <br /> <label th:text="${item.sku}"
-							style="font-size: 12px"></label> || <label
+							th:href="@{/items/itemInfo/{itemID}(itemID=${item.item_id})}" th:text="${item.name}"></a>
+						<br /> <label th:text="${item.sku}" style="font-size: 12px"></label> || <label
 							th:text="${item.barcode}" style="font-size: 12px"></label>
 					</div>
 					<div class="col">
-						<p class="text-center" style="padding-top: 15px"
-							th:text="${item.expectedTotal}"></p>
+						<p class="text-center" style="padding-top: 15px" th:text="${item.expectedTotal}"></p>
 					</div>
 					<!-- ?? Create a form here that will call javascript methods to auto submit onChange 
 					in order in order for a java method be called & update the invenotry amount -->
 					<div class="col">
 						<form th:action="@{/onChange/actual/{itemID}(itemID=${item.item_id})}"
 							th:object="${actualInput}" method="POST" enctype="utf8">
-							<input class="textbox-transparent" type="text"
-								th:onchange="submit()" maxlength="4" th:if="${isNow}"
-								th:placeholder="${item.actualTotal}" th:field="*{actualTotal}"></input>
-							<p class="text-center" style="padding-top: 15px"
-								th:unless="${isNow}" th:text="${item.actualTotal}"></p>
+							<input class="textbox-transparent" type="text" th:onchange="submit()" maxlength="4"
+								th:if="${isNow}" th:placeholder="${item.actualTotal}" th:field="*{actualTotal}"></input>
+							<p class="text-center" style="padding-top: 15px" th:unless="${isNow}"
+								th:text="${item.actualTotal}"></p>
 						</form>
 					</div>
 					<div class="col">
 						<form th:action="@{/onChange/coming/{itemID}(itemID=${item.item_id})}"
 							th:object="${comingInput}" method="POST" enctype="utf8">
-							<input class="textbox-transparent" style="color: red" type="text"
-								th:onchange="submit()" maxlength="4" th:if="${isNow}"
-								th:placeholder="${item.coming}" th:field="*{comingTotal}"></input>
-							<p class="text-center" style="padding-top: 15px"
-								th:unless="${isNow}" th:text="${item.coming}"></p>
+							<input class="textbox-transparent" style="color: red" type="text" th:onchange="submit()"
+								maxlength="4" th:if="${isNow}" th:placeholder="${item.coming}"
+								th:field="*{comingTotal}"></input>
+							<p class="text-center" style="padding-top: 15px" th:unless="${isNow}"
+								th:text="${item.coming}"></p>
 						</form>
 					</div>
 					<div class="col">
-						<p class="text-center" style="padding-top: 15px"
-							th:text="${item.orderCircleTotal}"></p>
+						<p class="text-center" style="padding-top: 15px" th:text="${item.orderCircleTotal}"></p>
 					</div>
 					<div class="col">
-						<p class="text-center" style="padding-top: 15px"
-							th:text="${item.offset}"></p>
+						<p class="text-center" style="padding-top: 15px" th:text="${item.offset}"></p>
 					</div>
 				</div>
 			</th:block>
@@ -129,8 +119,7 @@
 					th:classappend="${selectedButton} == 'Now' ? 'btn btn-dark' : 'btn btn-outline-dark'"
 					style="margin-top: 5px;">Now</a>
 				<th:block th:each="month : ${months}" style="padding: 0px 10px;">
-					<a href="index.html"
-						th:href="@{/previousMonth/{accessCode}(accessCode=${month.access})}"
+					<a href="index.html" th:href="@{/previousMonth/{accessCode}(accessCode=${month.access})}"
 						th:text="${month.access}"
 						th:classappend="${selectedButton} == ${month.access} ? 'btn btn-dark' : 'btn btn-outline-dark'"
 						style="margin-top: 5px;"></a>
@@ -139,12 +128,34 @@
 		</div>
 	</div>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
-		integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
-		crossorigin="anonymous">
-		
-	</script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
+		integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous">
+
+		</script>
+
+	<!-- Modal -->
+	<div class="modal fade" id="archiveConfirmationModal" tabindex="-1" aria-labelledby="archiveConfirmationModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="archiveConfirmationModalLabel">Are you sure you want to archive the
+						month?</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p style="font-weight: bold; color:red">Warning! This cannot be undone!</p>
+					<p>This will save the current month & clear out the current month to be brand new.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<form method="POST" th:action="@{/archiveMonth}">
+						<button type="submit" name="submit" value="value" class="btn btn-danger">Archive Month</button>
+					</form> 
+				</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 

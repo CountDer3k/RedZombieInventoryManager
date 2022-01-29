@@ -140,11 +140,10 @@ public class HomeController {
         }	    
 		return new ModelAndView("menu/ImportItems");
 	}
-	
 
-	@GetMapping("/archiveMonth")
+	@PostMapping("/archiveMonth")
 	@Log
-	public ModelAndView archiveMonth() {
+	public ModelAndView archiveMonth2(){
 		if(!itemService.archiveMonth()) {
 			logger.error("Failed to archive the month");
 			ModelAndView mv = new ModelAndView("index");
@@ -156,7 +155,6 @@ public class HomeController {
 			return mv;
 		}
 	}
-
 
 	private ModelAndView GridViewInfo(List<ItemModel> items, boolean isNow, String accessCode) {
 		ModelAndView mv = new ModelAndView("index");
