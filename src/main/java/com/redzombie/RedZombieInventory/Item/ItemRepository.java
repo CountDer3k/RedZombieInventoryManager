@@ -66,6 +66,10 @@ public class ItemRepository {
 			+ "INNER JOIN Glass_Type gt "
 			+ "ON i.glass_type = gt.glass_type_id "
 			+ "WHERE sku = :sku AND month = :month AND year = :year ";
+	private final String GET_COMING_FROM_CURRENT_ITEMS = "SELECT * FROM Item i INNER JOIN Brand b "
+	+ "ON i.brand = b.brand_id "
+	+ "INNER JOIN Glass_Type gt "
+	+ "ON i.glass_type = gt.glass_type_id WHERE coming IS NOT null AND coming > 0 ";
 
 	private final String ADD_ITEM = "INSERT INTO Item "
 			+ "(name, sku, barcode, brand, glass_type, isUV, item_type, previousMonthTotal, actualTotal,"
@@ -269,6 +273,18 @@ public class ItemRepository {
 			return item;
 		}catch(Exception e) {
 			logger.error("ItemRepository - getItemInfoFromSKU() " + e.toString());
+			return null;
+		}
+	}
+
+	@Log
+	public List<ItemModel> getAllComingFromCurrent(){
+		try {
+			List<ItemModel> comingItems = new ArrayList<ItemModel>();
+			comingItems = (List<ItemModel>)jdbc.query(GET_COMING_FROM_CURRENT_ITEMS, new ItemRowMapper());
+			return comingItems;
+		}catch(Exception e) {
+			logger.error("ItemRepository - getAllComingFromCurrent() " + e.toString());
 			return null;
 		}
 	}

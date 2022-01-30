@@ -22,16 +22,18 @@
 	<nav class="navbar navbar-expand-lg navbar-dark" id="navigationFragment">
 		<div class="container-fluid row" style="padding-top: 10px">
 			<div class="col-3">
-				<div class="dropdown" style="padding-left:30px">
-					<button class="btn btn-outline-dark" style="vertical-align:middle;"><i class="fas fa-bars"></i></i></button>
-					<div class="dropdown-content">
-						<a href="" class="btn dropdown-button" th:href="@{/items/addItem}">Add Item</a> 
+				<div class="dropdown" style="padding-left:30px;">
+					<button class="btn btn-outline-dark" style="vertical-align:left;"><i class="fas fa-bars"></i></i></button>
+					<div class="dropdown-content" style="width:max-content">
+						<a href="" class="btn dropdown-button" th:href="@{/items/addItem}"><i class="fas fa-plus"></i> Add Item</a> 
+						<div style="border-bottom: 1px solid rgb(182, 182, 182) !important; margin:auto; width:90%"></div>
+						<a href="" class="btn dropdown-button" th:href="@{/addComing}"><i class="fas fa-plus"> </i>Add Coming To Total</a> 
 						<div style="border-bottom: 1px solid rgb(182, 182, 182) !important; margin:auto; width:90%"></div>
 						<button type="button" class="btn dropdown-button" data-bs-toggle="modal" data-bs-target="#archiveConfirmationModal">
-							Archive Month
+							<i class="fas fa-archive"></i> Archive Month
 						  </button>
 						<div style="border-bottom: 1px solid rgb(182, 182, 182) !important; margin:auto; width:90%"></div>
-						<a href="" class="btn dropdown-button" th:href="@{/importWeek}">Import Items</a>
+						<a href="" class="btn dropdown-button" th:href="@{/importWeek}"><i class="fas fa-file-import"></i> Import Items</a>
 					</div>
 				</div>
 				<a href="index.html" th:href="@{/}"><img th:src="@{/images/logo.png}"
@@ -39,8 +41,8 @@
 			</div>
 
 			<div class="col-6">
-				<form class="d-flex">
-					<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+				<form class="d-flex" th:action="@{/search/}" method="POST" enctype="utf8">
+					<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchParameter">
 					<button class="btn btn-outline-success btn-outline-dark-d3" type="submit">Search!</button>
 				</form>
 			</div>

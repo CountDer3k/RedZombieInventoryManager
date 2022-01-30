@@ -27,6 +27,7 @@ import com.redzombie.RedZombieInventory.aop.Log;
 
 import dto.actualTotalDto;
 import dto.comingDto;
+import dto.searchDto;
 
 
 
@@ -156,12 +157,35 @@ public class HomeController {
 		}
 	}
 
+	@PostMapping("/addComing")
+	@Log
+	public ModelAndView addComingToTotal(){
+		ModelAndView mv = new ModelAndView("error");
+		if(itemService.addComingToTotal()){
+			mv = new ModelAndView("redirect:/");
+		}
+		return mv;
+	}
+
+	@GetMapping("/addComing")
+	@Log
+	public ModelAndView addComingToTotals(){
+		ModelAndView mv = new ModelAndView("error");
+		if(itemService.addComingToTotal()){
+			mv = new ModelAndView("redirect:/");
+		}
+		return mv;
+	}
+
+	@PostMapping("/")
+	@Log
 	private ModelAndView GridViewInfo(List<ItemModel> items, boolean isNow, String accessCode) {
 		ModelAndView mv = new ModelAndView("index");
 		try {
 			actualTotalDto actualDto = new actualTotalDto();
 			comingDto comingDto = new comingDto();
 			List<monthYearModel> months = itemService.getAllMonthYears();
+			searchDto searchParms = new searchDto();
 			mv.getModelMap().addAttribute("items", items);
 			mv.getModelMap().addAttribute("months", months);
 			// Used to show inputs instead of labels when using the bottom bar
@@ -169,6 +193,7 @@ public class HomeController {
 			mv.getModelMap().addAttribute("selectedButton", accessCode);
 			mv.getModelMap().addAttribute("actualInput", actualDto);
 			mv.getModelMap().addAttribute("comingInput", comingDto);
+			mv.getModelMap().addAttribute("searchParms", searchParms);
 			return mv;
 		}catch(Exception e) {
 			logger.error("HomeController - GridViewInfo() "+ e.toString());
