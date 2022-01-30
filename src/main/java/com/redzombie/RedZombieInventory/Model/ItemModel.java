@@ -112,7 +112,7 @@ public class ItemModel {
 	public void setCalcuations() {
 		try {
 			orderedThisMonth = week1 + week2 + week3 + week4 + week5;
-			expectedTotal = (previousMonthTotal - orderedThisMonth) + coming;
+			expectedTotal = (previousMonthTotal - orderedThisMonth) + coming + orderedFromManufacturer;
 			int actual = actualTotal != null && !actualTotal.equals("") ? Integer.parseInt(actualTotal) : expectedTotal;
 			orderCircleTotal = actual + coming;
 			offset = (actual - expectedTotal);

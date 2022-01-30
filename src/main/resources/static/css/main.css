@@ -38,6 +38,10 @@
 	color: white !important;
 }
 
+.background-style1{
+	/* background-color: #261C2C; */
+}
+
 .d3Card {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 	margin: 20px;
@@ -53,16 +57,6 @@
 	margin-left: 15px;
 	margin-right: 15px;
 	border-radius: 10px;
-}
-
-.d3CardRegister {
-	background-color: #3E2C41;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	border-radius: 20px;
-	height: 500px;
-	width: 500px;
-	margin: auto;
-	margin-top: 40px;
 }
 
 .sidePadding {
@@ -123,6 +117,43 @@ a.h2:hover, a.h2:active {
 	padding: 8px;
 }
 
+
+
+/* DropDown Start */
+.dropdown{
+	position: relative;
+	display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+  }
+
+  .dropdown-button{
+	  width:100%;
+	  text-align: left !important;
+	  /* height:20px; */
+	  /* border-bottom: 1px solid rgb(182, 182, 182) !important; */
+  }
+
+/* Change color of dropdown links on hover */
+.dropdown-content button:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+	display: block;
+  }
+
+/* DropDown End */
+
+
+
 /* Headers */
 .Brand {
 	color: white;
@@ -137,6 +168,8 @@ a.h2:hover, a.h2:active {
 /* Glass Type Colors */
 .item-cell {
 	color: white;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .glass-Standard {
@@ -151,16 +184,36 @@ a.h2:hover, a.h2:active {
 	background-color: #EC7063;
 }
 
+.glass-FCSA {
+	background-color: #c67d6c;
+}
+
+.glass-Watches {
+	background-color: #365f33;
+}
+
+.glass-Otter {
+	background-color: #abe7a7;
+}
+
 .glass-camera {
-	
+	background-color: #65a671;
 }
 
 .glass-tablet {
-	
+	background-color: #a977f5;
+}
+
+.glass-back {
+	background-color: #78c9d1;
 }
 
 .glass-sideAdhesive {
-	
+	background-color: #e59134;
+}
+
+.glass-3D {
+	background-color: #e59134;
 }
 
 .glass-UV {

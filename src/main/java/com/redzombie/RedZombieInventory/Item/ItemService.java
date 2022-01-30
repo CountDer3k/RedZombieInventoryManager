@@ -1,5 +1,6 @@
 package com.redzombie.RedZombieInventory.Item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -139,7 +140,6 @@ public class ItemService {
 		}
 	}
 
-
 	@Log
 	public boolean addItemDto(ItemDto dto) {
 		try {
@@ -167,5 +167,42 @@ public class ItemService {
 			logger.error("ItemService - addItemDto() " + e.toString());
 			return false;
 		}
+	}
+
+	@Log
+	public boolean addComingToTotal(){
+		boolean isSuccessful = true;
+
+		List<ItemModel> comingItems = itemRepo.getAllComingFromCurrent();
+
+		//iterate through all coming items & change their total include the coming
+		for(ItemModel item : comingItems){
+			item.setOrderedFromManufacturer(item.getOrderedFromManufacturer() + item.getComing());
+			item.setComing(0);
+			itemRepo.updateItem(item);
+		}
+
+		return isSuccessful;
+	}
+
+	@Log
+	public List<ItemModel> filterBy(List<ItemModel> items, String filterWord)
+	{
+		String[] filters = filterWord.split(" ");
+		List<ItemModel> filteredItems = new ArrayList<ItemModel>();
+
+		for(ItemModel item : items){
+			// item equals any of these add to list
+			for(String filter : filters){
+				if(item.getName().toLowerCase().contains(filter.toLowerCase()) ||
+				 item.getSku().toLowerCase().contains(filter.toLowerCase()) || 
+				 item.getBarcode().toLowerCase().contains(filter.toLowerCase()) || 
+				 item.getBrand().toLowerCase().contains(filter.toLowerCase()) || 
+				 item.getGlass_type().toLowerCase().contains(filter.toLowerCase())){
+					filteredItems.add(item);
+				}
+			}
+		}
+		return filteredItems;
 	}
 }
