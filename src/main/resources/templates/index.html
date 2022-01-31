@@ -82,7 +82,7 @@
 					<div class="col">
 						<form th:action="@{/onChange/actual/{itemID}(itemID=${item.item_id})}"
 							th:object="${actualInput}" method="POST" enctype="utf8">
-							<input class="textbox-transparent" type="number" pattern="[0-9]*" th:onchange="submit()" maxlength="4"
+							<input class="textbox-transparent"pattern="[0-9]*" th:onchange="submit()" maxlength="4"
 								th:if="${isNow}" th:placeholder="${item.actualTotal}" th:field="*{actualTotal}"></input>
 							<p class="text-center" style="padding-top: 15px" th:unless="${isNow}"
 								th:text="${item.actualTotal}"></p>
@@ -91,7 +91,7 @@
 					<div class="col">
 						<form th:action="@{/onChange/coming/{itemID}(itemID=${item.item_id})}"
 							th:object="${comingInput}" method="POST" enctype="utf8">
-							<input class="textbox-transparent" style="color: red" type="number" pattern="[0-9]*" th:onchange="submit()"
+							<input class="textbox-transparent" style="color: red" pattern="[0-9]*" th:onchange="submit()"
 								maxlength="4" th:if="${isNow}" th:placeholder="${item.coming}"
 								th:field="*{comingTotal}"></input>
 							<p class="text-center" style="padding-top: 15px" th:unless="${isNow}"

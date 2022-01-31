@@ -141,9 +141,12 @@ a.h2:hover, a.h2:active {
 	  /* height:20px; */
 	  /* border-bottom: 1px solid rgb(182, 182, 182) !important; */
   }
+  .dropdown-button:hover{
+	background-color: #b9b9b9;
+  }
 
 /* Change color of dropdown links on hover */
-.dropdown-content button:hover {background-color: #f1f1f1}
+.dropdown-content a:hover button:hover {background-color: #b9b9b9}
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
