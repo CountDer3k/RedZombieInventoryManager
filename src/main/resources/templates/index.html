@@ -77,23 +77,21 @@
 					<div class="col">
 						<p class="text-center" style="padding-top: 15px" th:text="${item.expectedTotal}"></p>
 					</div>
-					<!-- ?? Create a form here that will call javascript methods to auto submit onChange 
-					in order in order for a java method be called & update the invenotry amount -->
+					<!-- onsubmit=return false will prevent post back from happening -->
 					<div class="col">
-						<form th:action="@{/onChange/actual/{itemID}(itemID=${item.item_id})}"
-							th:object="${actualInput}" method="POST" enctype="utf8">
-							<input class="textbox-transparent"pattern="[0-9]*" th:onchange="submit()" maxlength="4"
-								th:if="${isNow}" th:placeholder="${item.actualTotal}" th:field="*{actualTotal}"></input>
+						<form th:object="${actualInput}" onsubmit="return false">
+							<!-- th:onchange & th:id & th:field allow for AJAX function to be called using jQuery -->
+							<input class="textbox-transparent" pattern="[0-9]*" th:onchange="'javascript:onChangeActual(\'' + ${item.item_id} + '\');'"
+							 maxlength="4" th:if="${isNow}" th:field="*{actualTotal}" th:placeholder="${item.actualTotal}" th:id="'txtActual' + ${item.item_id}"></input>
 							<p class="text-center" style="padding-top: 15px" th:unless="${isNow}"
 								th:text="${item.actualTotal}"></p>
 						</form>
 					</div>
 					<div class="col">
-						<form th:action="@{/onChange/coming/{itemID}(itemID=${item.item_id})}"
-							th:object="${comingInput}" method="POST" enctype="utf8">
-							<input class="textbox-transparent" style="color: red" pattern="[0-9]*" th:onchange="submit()"
+						<form th:object="${comingInput}" onsubmit="return false">
+							<input class="textbox-transparent" style="color: red" pattern="[0-9]*" th:onchange="'javascript:onChangeComing(\'' + ${item.item_id} + '\');'"
 								maxlength="4" th:if="${isNow}" th:placeholder="${item.coming}"
-								th:field="*{comingTotal}"></input>
+								th:field="*{comingTotal}" th:id="'txtComing' + ${item.item_id}"></input>
 							<p class="text-center" style="padding-top: 15px" th:unless="${isNow}"
 								th:text="${item.coming}"></p>
 						</form>
@@ -160,6 +158,35 @@
 
 </body>
 
+<!-- jQuery CDN -->
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous">
+</script>
+<script>
+	function onChangeComing(itemid){
+		cvalue = document.getElementById('txtComing'+itemid).value;
+		urlString = "http://localhost:8080/API/itemComingUpdate";
+		$.ajax({
+			type: "POST",
+			url: urlString,
+			data:{itemID: itemid, comingValue: cvalue}
+		});
+		return false;
+	};
 
+	function onChangeActual(itemid){
+		actualValue = document.getElementById('txtActual'+itemid).value;
+		urlString = "http://localhost:8080/API/itemActualUpdate";
+		$.ajax({
+			type: "POST",
+			url: urlString,
+			data:{itemID: itemid, actualValue: actualValue}
+		});
+		return false;
+	};
+
+</script>
 
 </html>
