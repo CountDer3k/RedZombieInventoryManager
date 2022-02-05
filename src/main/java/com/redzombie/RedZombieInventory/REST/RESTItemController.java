@@ -29,17 +29,11 @@ public class RESTItemController{
         this.itemService = itemService;
     }
 
-    @GetMapping("testGet")
-    @Log
-    public ResponseEntity<Object> testGET(){
-        return ResponseEntity.ok("Hi there");
-    }
-
     @PostMapping("itemActualUpdate")
     @Log
     public ResponseEntity<Object> updateActualTotal(
         @RequestParam(name="itemID", required = true) String itemID,
-        @RequestParam(name= "actualValue", required=false) String actual  
+        @RequestParam(name= "actualValue", required=true) String actual  
     ){
         Object item = new Object();
         try{
@@ -63,7 +57,7 @@ public class RESTItemController{
     @Log
     public ResponseEntity<Object> updateComingAmount(
         @RequestParam(name="itemID", required = true) String itemID,
-        @RequestParam(name= "comingValue", required=false) String coming        
+        @RequestParam(name= "comingValue", required=true) String coming        
     ){
         Object item = new Object();
         try{

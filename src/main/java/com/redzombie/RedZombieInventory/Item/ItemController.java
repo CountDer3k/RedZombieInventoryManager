@@ -1,6 +1,5 @@
 package com.redzombie.RedZombieInventory.Item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 
 import com.redzombie.RedZombieInventory.Model.BrandModel;
 import com.redzombie.RedZombieInventory.Model.GlassTypeModel;
@@ -172,7 +170,6 @@ public class ItemController {
 			return new ModelAndView("error");
 		}
 	}
-
 
 	private ModelAndView getMVForAddItem(ItemDto itemDto, boolean isShowingValidation) {
 		ModelAndView mv = new ModelAndView("items/addItem");
